@@ -1,0 +1,144 @@
+{
+  "products": [
+    {
+      "_type": "product",
+      "name": "Luxe Velvet Sofa",
+      "slug": "luxe-velvet-sofa",
+      "category": "seating",
+      "price": 3500,
+      "description": "An exquisite contemporary sofa upholstered in premium velvet fabric. Perfect for modern living spaces.",
+      "fullDescription": "Our Luxe Velvet Sofa combines timeless elegance with modern comfort. Handcrafted with precision, this sofa features a deep, supportive seat and high-quality velvet upholstery in a warm charcoal tone. The solid wood frame ensures durability and longevity.",
+      "materials": "Premium Velvet, Solid Wood Frame, High-Density Foam",
+      "dimensions": "L: 240cm x W: 95cm x H: 85cm",
+      "inStock": true
+    },
+    {
+      "_type": "product",
+      "name": "Marble Coffee Table",
+      "slug": "marble-coffee-table",
+      "category": "tables",
+      "price": 1200,
+      "description": "A stunning marble top coffee table with a brass frame.",
+      "fullDescription": "Elevate your living space with this stunning Marble Coffee Table. The natural veining of the marble top creates a unique, sophisticated look. Paired with a brushed brass frame, this table serves as both a functional piece and a statement art piece.",
+      "materials": "Natural Marble, Brushed Brass, Tempered Glass Shelf",
+      "dimensions": "L: 120cm x W: 70cm x H: 45cm",
+      "inStock": true
+    },
+    {
+      "_type": "product",
+      "name": "Leather Accent Chair",
+      "slug": "leather-accent-chair",
+      "category": "seating",
+      "price": 1800,
+      "description": "A sophisticated leather accent chair perfect for any reading nook.",
+      "fullDescription": "This handpicked leather accent chair combines comfort with sophistication. Upholstered in genuine Italian leather, it features a curved silhouette and walnut wood legs. An ideal addition to bedrooms, offices, or living spaces.",
+      "materials": "Genuine Italian Leather, Walnut Wood, Down Fill Cushion",
+      "dimensions": "L: 85cm x W: 80cm x H: 95cm",
+      "inStock": true
+    },
+    {
+      "_type": "product",
+      "name": "Brass Floor Lamp",
+      "slug": "brass-floor-lamp",
+      "category": "lighting",
+      "price": 650,
+      "description": "An elegant brass floor lamp with a sculptural design.",
+      "fullDescription": "Designed for those who appreciate contemporary aesthetics, this Brass Floor Lamp features a minimalist arc design. The brushed brass finish creates warm ambient lighting perfect for creating an inviting atmosphere.",
+      "materials": "Brushed Brass, Fabric Shade, LED Compatible",
+      "dimensions": "Total Height: 165cm, Base Width: 45cm",
+      "inStock": true
+    },
+    {
+      "_type": "product",
+      "name": "Walnut Dining Table",
+      "slug": "walnut-dining-table",
+      "category": "tables",
+      "price": 2400,
+      "description": "A premium walnut dining table for elegant entertaining.",
+      "fullDescription": "Crafted from premium walnut wood, this dining table showcases natural grain patterns and rich tones. The solid construction ensures stability while the clean lines provide a timeless aesthetic that complements various interior styles.",
+      "materials": "Premium Walnut Wood, Steel Brackets",
+      "dimensions": "L: 200cm x W: 100cm x H: 75cm",
+      "inStock": true
+    },
+    {
+      "_type": "product",
+      "name": "Linen Wall Hanging",
+      "slug": "linen-wall-hanging",
+      "category": "decor",
+      "price": 450,
+      "description": "A beautiful natural linen wall hanging with organic patterns.",
+      "fullDescription": "Add texture and warmth to your walls with this handwoven linen wall hanging. Each piece is unique, featuring subtle organic patterns and soft, neutral tones that complement any interior design scheme.",
+      "materials": "100% Pure Linen, Natural Dyes",
+      "dimensions": "W: 80cm x H: 120cm",
+      "inStock": true
+    }
+  ],
+  "services": [
+    {
+      "_type": "service",
+      "name": "Interior Design Consultation",
+      "slug": "interior-design-consultation",
+      "description": "Expert consultation to transform your living spaces with luxury furniture and design.",
+      "longDescription": "Our experienced designers will work with you to create a personalized interior design plan. From concept to execution, we ensure every detail reflects your style and needs."
+    },
+    {
+      "_type": "service",
+      "name": "Custom Furniture Design",
+      "slug": "custom-furniture-design",
+      "description": "Bespoke furniture pieces crafted to your exact specifications.",
+      "longDescription": "Looking for something unique? We create custom-made furniture pieces tailored to your space and preferences. Our master craftsmen ensure the highest quality in every creation."
+    },
+    {
+      "_type": "service",
+      "name": "Space Planning & Layout",
+      "slug": "space-planning-layout",
+      "description": "Professional space planning to maximize functionality and aesthetics.",
+      "longDescription": "Let our experts help you make the most of your space. We provide detailed floor plans and layout recommendations to ensure optimal flow and functionality."
+    },
+    {
+      "_type": "service",
+      "name": "Furniture Installation & Delivery",
+      "slug": "furniture-installation-delivery",
+      "description": "Professional delivery and installation services for your furniture.",
+      "longDescription": "Sit back and relax - we handle the logistics. Our team provides careful delivery and expert installation to ensure your furniture is perfectly placed and secure."
+    }
+  ],
+  "testimonials": [
+    {
+      "_type": "testimonial",
+      "author": "Sarah Mitchell",
+      "text": "The team transformed my living room into a sanctuary. Every piece was carefully selected and the attention to detail is unmatched.",
+      "rating": 5
+    },
+    {
+      "_type": "testimonial",
+      "author": "James Chen",
+      "text": "From selection to installation, the service was seamless. I'm thrilled with my new furniture collection.",
+      "rating": 5
+    },
+    {
+      "_type": "testimonial",
+      "author": "Emma Rodriguez",
+      "text": "Premium quality at its finest. The craftsmanship is evident in every piece. Highly recommended!",
+      "rating": 5
+    }
+  ],
+  "news": [
+    {
+      "_type": "news",
+      "title": "New Collection Launch: Sustainable Luxury",
+      "slug": "new-collection-sustainable-luxury",
+      "excerpt": "Introducing our eco-friendly luxury collection featuring sustainably sourced materials.",
+      "content": "We're proud to announce our latest collection featuring sustainable materials without compromising on luxury and style. Each piece has been carefully crafted to minimize environmental impact while maintaining the premium quality you expect from us.",
+      "publishedAt": "2024-05-01"
+    },
+    {
+      "_type": "news",
+      "title": "Interior Design Trends 2024",
+      "slug": "interior-design-trends-2024",
+      "excerpt": "Discover the top interior design trends shaping modern homes this year.",
+      "content": "This year's interior design landscape is all about personalization and comfort. We explore the trending colors, materials, and styles that are defining luxury homes in 2024. From warm naturals to bold jewel tones, find out what's defining contemporary luxury.",
+      "publishedAt": "2024-04-15"
+    }
+  ]
+}
