@@ -2,15 +2,15 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { ShoppingBag, Eye } from 'lucide-react'
 import { urlFor } from '@/lib/sanity.image'
+import { CATEGORY_LABELS } from '@/lib/mock-data'
 
 interface ProductCardProps {
   id: string
   name: string
   slug: string
   description: string
-  image: any
+  image: unknown
   category: string
 }
 
@@ -21,59 +21,54 @@ export function ProductCard({
   image,
   category,
 }: ProductCardProps) {
-  let imageUrl = '/placeholder.jpg'
-  
+  let imageUrl = ''
+
   if (image) {
     if (typeof image === 'string') {
       imageUrl = image
+    } else if (
+      typeof image === 'object' &&
+      image !== null &&
+      'asset' in image &&
+      (image as { asset?: { url?: string } }).asset?.url
+    ) {
+      imageUrl = (image as { asset: { url: string } }).asset.url
     } else {
       try {
-        imageUrl = urlFor(image).width(400).height(400).url()
-      } catch (e) {
-        imageUrl = '/placeholder.jpg'
+        imageUrl = urlFor(image).width(600).height(400).url()
+      } catch {
+        imageUrl = ''
       }
     }
   }
 
+  const categoryLabel = CATEGORY_LABELS[category] ?? category
+
   return (
-    <Link href={`/products/${slug}`}>
-      <div className="group bg-card rounded-lg overflow-hidden border border-border hover:border-accent transition-all duration-300 cursor-pointer h-full flex flex-col shadow-sm hover:shadow-md">
-        {/* Image Container */}
-        <div className="relative w-full h-64 overflow-hidden bg-muted">
-          <Image
-            src={imageUrl}
-            alt={name}
-            fill
-            className="object-cover group-hover:scale-110 transition-transform duration-500"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
-          {/* Overlay */}
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-            <Eye className="text-white" size={32} />
-          </div>
+    <Link href={`/products/${slug}`} className="group block h-full">
+      <article className="h-full flex flex-col bg-white rounded-xl border border-[#EDE8DF] overflow-hidden transition-all duration-300 hover:border-[#B8864E] hover:shadow-lg hover:-translate-y-0.5">
+        <div className="relative aspect-video bg-[#EDE8DF] overflow-hidden">
+          {imageUrl ? (
+            <Image
+              src={imageUrl}
+              alt={name}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              sizes="(max-width: 640px) 100vw, 25vw"
+            />
+          ) : null}
         </div>
-
-        {/* Content */}
-        <div className="p-4 flex-grow flex flex-col">
-          <div className="mb-2">
-            <p className="text-xs uppercase tracking-wider text-accent font-semibold">
-              {category}
-            </p>
-          </div>
-          <h3 className="font-serif text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">
-            {name}
-          </h3>
-          <p className="text-sm text-muted-foreground mb-4 line-clamp-2 flex-grow">
-            {description}
+        <div className="p-5 flex flex-col flex-1">
+          <p className="text-xs uppercase tracking-wider text-[#B8864E] font-medium mb-2">
+            {categoryLabel}
           </p>
-
-          {/* Action Button */}
-          <div className="flex items-center space-x-2 text-primary hover:text-accent transition-colors pt-4 border-t border-border">
-            <span className="text-sm font-medium">View Details</span>
-            <ShoppingBag size={16} />
-          </div>
+          <h3 className="font-serif text-lg text-[#1C1612] mb-2 line-clamp-2">{name}</h3>
+          <p className="text-sm text-[#6B5B4E] line-clamp-2 flex-1 mb-4">{description}</p>
+          <span className="text-sm text-[#B8864E] font-medium group-hover:underline mt-auto">
+            Shiko detajet →
+          </span>
         </div>
-      </div>
+      </article>
     </Link>
   )
 }

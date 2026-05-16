@@ -4,55 +4,34 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Light Mode - Luxury Palette */
-  --background: #f9f7f4;
-  --foreground: #2a2520;
+  --background: #faf7f2;
+  --foreground: #1c1612;
   --card: #ffffff;
-  --card-foreground: #2a2520;
+  --card-foreground: #1c1612;
   --popover: #ffffff;
-  --popover-foreground: #2a2520;
-  --primary: #8b7355;
+  --popover-foreground: #1c1612;
+  --primary: #b8864e;
   --primary-foreground: #ffffff;
-  --secondary: #d4c5b9;
-  --secondary-foreground: #2a2520;
-  --muted: #e8e3de;
-  --muted-foreground: #6b6560;
-  --accent: #a89968;
+  --secondary: #ede8df;
+  --secondary-foreground: #1c1612;
+  --muted: #ede8df;
+  --muted-foreground: #6b5b4e;
+  --accent: #b8864e;
   --accent-foreground: #ffffff;
   --destructive: #dc2626;
   --destructive-foreground: #fafafa;
-  --border: #e8e3de;
-  --input: #f3f0ed;
-  --ring: #8b7355;
-  --radius: 0.5rem;
-}
-
-.dark {
-  /* Dark Mode - Luxury Palette */
-  --background: #1a1815;
-  --foreground: #f5f3f0;
-  --card: #2a2520;
-  --card-foreground: #f5f3f0;
-  --popover: #2a2520;
-  --popover-foreground: #f5f3f0;
-  --primary: #a89968;
-  --primary-foreground: #1a1815;
-  --secondary: #8b7355;
-  --secondary-foreground: #f5f3f0;
-  --muted: #3d3a36;
-  --muted-foreground: #a09a94;
-  --accent: #d4c5b9;
-  --accent-foreground: #1a1815;
-  --destructive: #ef4444;
-  --destructive-foreground: #1a1815;
-  --border: #3d3a36;
-  --input: #2a2520;
-  --ring: #a89968;
+  --border: #ede8df;
+  --input: #faf7f2;
+  --ring: #b8864e;
+  --wood-dark: #1c1612;
+  --wood-footer: #130c08;
+  --warm-white: #faf7f2;
+  --radius: 0.75rem;
 }
 
 @theme inline {
-  --font-sans: 'Geist', 'Geist Fallback';
-  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+  --font-sans: var(--font-dm-sans), 'DM Sans', system-ui, sans-serif;
+  --font-serif: var(--font-playfair), 'Playfair Display', Georgia, serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -72,6 +51,9 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-wood-dark: var(--wood-dark);
+  --color-wood-footer: var(--wood-footer);
+  --color-warm-white: var(--warm-white);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -83,6 +65,22 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-serif);
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 }

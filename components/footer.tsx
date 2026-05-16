@@ -1,136 +1,136 @@
 'use client'
 
 import Link from 'next/link'
-import { Facebook, Instagram, Twitter, Linkedin, MapPin, Phone, Mail } from 'lucide-react'
+import { Facebook, Instagram, MapPin, Phone, Mail } from 'lucide-react'
+import { LogoMark } from './logo-mark'
+
+const productLinks = [
+  { label: 'Kuzhinat', href: '/products?category=kuzhina' },
+  { label: 'Dhoma gjumi', href: '/products?category=dhoma-gjumi' },
+  { label: 'Dhoma ndenje', href: '/products?category=dhoma-ndenje' },
+  { label: 'Dyer & dritare', href: '/products?category=dyer-dritare' },
+  { label: 'Të gjitha produktet', href: '/products' },
+]
+
+const companyLinks = [
+  { label: 'Rreth Nesh', href: '/about' },
+  { label: 'Shërbimet', href: '/services' },
+  { label: 'Galeria', href: '/gallery' },
+  { label: 'Kontakt', href: '/contact' },
+  { label: 'Konsultë falas', href: '/contact' },
+]
 
 export function Footer() {
-  const currentYear = new Date().getFullYear()
-
-  const footerSections = [
-    {
-      title: 'Kompania',
-      links: [
-        { label: 'Rreth Nesh', href: '/about' },
-        { label: 'Shërbimet', href: '/services' },
-        { label: 'Galeria', href: '/gallery' },
-        { label: 'Kontakt', href: '/contact' },
-      ],
-    },
-    {
-      title: 'Produktet',
-      links: [
-        { label: 'Të Gjithë Produktet', href: '/products' },
-        { label: 'Divane', href: '/products?category=sofas' },
-        { label: 'Karrige', href: '/products?category=chairs' },
-        { label: 'Tryeza', href: '/products?category=tables' },
-      ],
-    },
-    {
-      title: 'Mbështetje',
-      links: [
-        { label: 'Pyetje të Shpeshta', href: '#' },
-        { label: 'Informacione Dërgimi', href: '#' },
-        { label: 'Këmbimet', href: '#' },
-        { label: 'Politika e Privatësisë', href: '#' },
-      ],
-    },
-  ]
-
   return (
-    <footer className="bg-card border-t border-border mt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {/* Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          {/* Brand Section */}
-          <div className="lg:col-span-1">
-            <Link href="/" className="flex items-center space-x-2 mb-4">
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold">L</span>
-              </div>
-              <span className="font-serif text-xl font-semibold text-foreground">Luksi</span>
+    <footer className="bg-[#130C08] text-[#FAF7F2]/70">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
+          <div className="lg:col-span-5">
+            <Link href="/" className="inline-flex items-center gap-2.5 mb-4">
+              <LogoMark className="w-7 h-7" />
+              <span className="font-serif text-xl text-[#FAF7F2]">Almer</span>
             </Link>
-            <p className="text-muted-foreground text-sm mb-4">
-              Mobilje luksi të zgjedhura për shtëpinë e ëndrrave tuaja.
+            <p className="text-sm leading-relaxed mb-6 max-w-sm">
+              Mobilje artizanale me porosi — druri premium, zejtari shqiptar që nga 1998.
             </p>
-            {/* Social Links */}
-            <div className="flex space-x-4">
-              <a href="#" className="p-2 rounded-lg bg-muted hover:bg-accent hover:text-accent-foreground transition-colors">
-                <Instagram size={18} />
+            <ul className="space-y-3 text-sm mb-6">
+              <li className="flex items-center gap-2.5">
+                <Phone size={15} className="text-[#B8864E] shrink-0" />
+                <a href="tel:+35541234567" className="hover:text-[#FAF7F2] transition-colors">
+                  +355 4 123 4567
+                </a>
+              </li>
+              <li className="flex items-center gap-2.5">
+                <Mail size={15} className="text-[#B8864E] shrink-0" />
+                <a
+                  href="mailto:info@almer.al"
+                  className="hover:text-[#FAF7F2] transition-colors"
+                >
+                  info@almer.al
+                </a>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <MapPin size={15} className="text-[#B8864E] shrink-0 mt-0.5" />
+                <span>Rr. e Kavajës, Tiranë 1001, Shqipëri</span>
+              </li>
+            </ul>
+            <div className="flex gap-3">
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-9 h-9 rounded-full border border-[#FAF7F2]/15 flex items-center justify-center hover:border-[#B8864E] hover:text-[#B8864E] transition-colors"
+                aria-label="Instagram"
+              >
+                <Instagram size={16} />
               </a>
-              <a href="#" className="p-2 rounded-lg bg-muted hover:bg-accent hover:text-accent-foreground transition-colors">
-                <Facebook size={18} />
-              </a>
-              <a href="#" className="p-2 rounded-lg bg-muted hover:bg-accent hover:text-accent-foreground transition-colors">
-                <Twitter size={18} />
-              </a>
-              <a href="#" className="p-2 rounded-lg bg-muted hover:bg-accent hover:text-accent-foreground transition-colors">
-                <Linkedin size={18} />
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-9 h-9 rounded-full border border-[#FAF7F2]/15 flex items-center justify-center hover:border-[#B8864E] hover:text-[#B8864E] transition-colors"
+                aria-label="Facebook"
+              >
+                <Facebook size={16} />
               </a>
             </div>
           </div>
 
-          {/* Footer Links */}
-          {footerSections.map((section) => (
-            <div key={section.title}>
-              <h3 className="font-semibold text-foreground mb-4">{section.title}</h3>
-              <ul className="space-y-2">
-                {section.links.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-muted-foreground hover:text-primary transition-colors text-sm"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+          <div className="lg:col-span-2">
+            <h3 className="text-[#FAF7F2] text-sm font-medium mb-4">Produktet</h3>
+            <ul className="space-y-2.5 text-sm">
+              {productLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="hover:text-[#FAF7F2] transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        {/* Contact Info */}
-        <div className="border-t border-border pt-8 mb-8">
-          <h3 className="font-semibold text-foreground mb-4">Informacione Kontakti</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="flex items-start space-x-3">
-              <MapPin size={20} className="text-accent mt-0.5 flex-shrink-0" />
-              <div>
-                <p className="text-sm text-muted-foreground">Rruga e Dizajnit, 123</p>
-                <p className="text-sm text-muted-foreground">Tiranë, Shqipëri 1001</p>
-              </div>
-            </div>
-            <div className="flex items-start space-x-3">
-              <Phone size={20} className="text-accent mt-0.5 flex-shrink-0" />
-              <div>
-                <p className="text-sm text-muted-foreground">+355 (04) 123-4567</p>
-                <p className="text-sm text-muted-foreground">E Hënë-E Premte 9AM-6PM</p>
-              </div>
-            </div>
-            <div className="flex items-start space-x-3">
-              <Mail size={20} className="text-accent mt-0.5 flex-shrink-0" />
-              <div>
-                <p className="text-sm text-muted-foreground">hello@luksi.al</p>
-                <p className="text-sm text-muted-foreground">Përgjigje brenda 24 orësh</p>
-              </div>
-            </div>
+          <div className="lg:col-span-2">
+            <h3 className="text-[#FAF7F2] text-sm font-medium mb-4">Kompania</h3>
+            <ul className="space-y-2.5 text-sm">
+              {companyLinks.map((link) => (
+                <li key={link.href + link.label}>
+                  <Link href={link.href} className="hover:text-[#FAF7F2] transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="lg:col-span-3">
+            <h3 className="text-[#FAF7F2] text-sm font-medium mb-4">Orari i punës</h3>
+            <ul className="space-y-2 text-sm mb-4">
+              <li>E Hënë – E Premte: 08:00 – 18:00</li>
+              <li>E Shtunë: 09:00 – 14:00</li>
+              <li>E Dielë: Mbyllur</li>
+            </ul>
+            <a
+              href="https://maps.google.com/?q=Tirane+Albania"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-[#B8864E] hover:text-[#d4a96a] transition-colors"
+            >
+              Shiko në hartë →
+            </a>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-sm text-muted-foreground">
-            © {currentYear} Mobilje Luksi. Të gjitha të drejtat e ruajtura.
-          </p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
-            <Link href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-              Politika e Privatësisë
+        <div className="border-t border-[#FAF7F2]/10 mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] text-[#FAF7F2]/40">
+          <p>© 2025 Almer · Tiranë, Shqipëri</p>
+          <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
+            <Link href="#" className="hover:text-[#FAF7F2]/70 transition-colors">
+              Politika e privatësisë
             </Link>
-            <Link href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-              Kushtet e Shërbimit
+            <Link href="#" className="hover:text-[#FAF7F2]/70 transition-colors">
+              Kushtet e shërbimit
             </Link>
-            <Link href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-              Cilësimet e Cookie
+            <Link href="#" className="hover:text-[#FAF7F2]/70 transition-colors">
+              Cookies
             </Link>
           </div>
         </div>
