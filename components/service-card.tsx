@@ -1,68 +1,45 @@
 'use client'
 
-import Image from 'next/image'
-import { ArrowRight } from 'lucide-react'
-import { urlFor } from '@/lib/sanity.image'
-import * as Icons from 'lucide-react'
+const DEFAULT_FEATURES: Record<string, string[]> = {
+  'Kuzhinat me porosi': ['Kabinete me porosi', 'Ishuj & sipërfaqe', 'Planifikim 3D falas'],
+  'Dhoma gjumi': ['Gardërobë walk-in', 'Krevat & komodinë', 'Ndriçim i integruar'],
+  'Arredim i plotë': ['Dizajn i gjithë shtëpisë', 'Koordinim i projektit', 'Montim & garanci'],
+}
 
 interface ServiceCardProps {
   title: string
   description: string
   icon?: string
-  image?: any
+  features?: string[]
 }
 
 export function ServiceCard({
   title,
   description,
-  icon,
-  image,
+  icon = '🪵',
+  features,
 }: ServiceCardProps) {
-  // Map icon names to lucide components
-  const iconMap: Record<string, any> = {
-    Sofa: Icons.Armchair,
-    Palette: Icons.Palette,
-    Hammer: Icons.Hammer,
-    Sparkles: Icons.Sparkles,
-    Users: Icons.Users,
-    Truck: Icons.Truck,
-  }
-
-  const IconComponent = icon && iconMap[icon] ? iconMap[icon] : Icons.Square
-
-  const imageUrl = image ? urlFor(image).width(400).height(300).url() : null
+  const bullets = features ?? DEFAULT_FEATURES[title] ?? [
+    'Dizajn me porosi',
+    'Material premium',
+    'Instalim profesional',
+  ]
 
   return (
-    <div className="group bg-card rounded-lg overflow-hidden border border-border hover:border-accent transition-all duration-300 h-full flex flex-col shadow-sm hover:shadow-md">
-      {/* Image or Icon */}
-      {imageUrl ? (
-        <div className="relative w-full h-48 overflow-hidden bg-muted">
-          <Image
-            src={imageUrl}
-            alt={title}
-            fill
-            className="object-cover group-hover:scale-110 transition-transform duration-500"
-          />
-        </div>
-      ) : (
-        <div className="w-full h-48 bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center">
-          <IconComponent className="text-primary" size={48} />
-        </div>
-      )}
-
-      {/* Content */}
-      <div className="p-6 flex flex-col flex-grow">
-        <h3 className="font-serif text-xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors">
-          {title}
-        </h3>
-        <p className="text-muted-foreground text-sm leading-relaxed mb-4 flex-grow">
-          {description}
-        </p>
-        <div className="flex items-center text-primary group-hover:text-accent transition-colors pt-4 border-t border-border">
-          <span className="text-sm font-medium">Learn More</span>
-          <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
-        </div>
+    <article className="group h-full flex flex-col bg-white rounded-xl border border-[#EDE8DF] p-6 sm:p-8 transition-all duration-300 hover:border-[#B8864E] hover:shadow-lg hover:-translate-y-0.5">
+      <div className="w-14 h-14 rounded-xl bg-[#B8864E]/10 flex items-center justify-center text-2xl mb-6">
+        {icon}
       </div>
-    </div>
+      <h3 className="font-serif text-xl text-[#1C1612] mb-3">{title}</h3>
+      <p className="text-sm text-[#6B5B4E] leading-relaxed mb-6">{description}</p>
+      <ul className="space-y-2 mt-auto">
+        {bullets.map((item) => (
+          <li key={item} className="flex items-start gap-2.5 text-sm text-[#6B5B4E]">
+            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#B8864E] shrink-0" />
+            {item}
+          </li>
+        ))}
+      </ul>
+    </article>
   )
 }

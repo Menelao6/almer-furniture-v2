@@ -1,15 +1,14 @@
 'use client'
 
-import Image from 'next/image'
 import { Star } from 'lucide-react'
-import { urlFor } from '@/lib/sanity.image'
 
 interface Testimonial {
   _id: string
-  clientName: string
+  clientName?: string
+  author?: string
   clientTitle?: string
-  image?: any
-  quote: string
+  quote?: string
+  text?: string
   rating: number
 }
 
@@ -17,68 +16,60 @@ interface TestimonialsProps {
   testimonials: Testimonial[]
 }
 
+function getInitials(name: string) {
+  return name
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase()
+}
+
 export function Testimonials({ testimonials }: TestimonialsProps) {
   return (
-    <section className="py-20">
+    <section className="py-16 sm:py-20 bg-[#FAF7F2]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-serif font-bold text-foreground mb-4">
-            Çfarë Thonë Klientët Tanë
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Përvoja reale të klientëve të kënaqur që kanë transformuar shtëpitë e tyre me mobiljen tonë.
-          </p>
-        </div>
+        <h2 className="font-serif text-3xl sm:text-4xl text-[#1C1612] text-center mb-12">
+          Çfarë thonë klientët tanë
+        </h2>
 
-        {/* Testimonials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.slice(0, 3).map((testimonial) => (
-            <div
-              key={testimonial._id}
-              className="bg-card rounded-lg border border-border p-8 hover:border-accent transition-all duration-300 shadow-sm hover:shadow-md"
-            >
-              {/* Rating */}
-              <div className="flex space-x-1 mb-4">
-                {Array.from({ length: testimonial.rating }).map((_, i) => (
-                  <Star
-                    key={`${testimonial._id}-star-${i}`}
-                    size={18}
-                    className="fill-accent text-accent"
-                  />
-                ))}
-              </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {testimonials.slice(0, 3).map((t) => {
+            const name = t.clientName ?? t.author ?? 'Klient'
+            const quote = t.quote ?? t.text ?? ''
+            const subtitle = t.clientTitle ?? ''
 
-              {/* Quote */}
-              <p className="text-muted-foreground italic mb-6 leading-relaxed">
-                &quot;{testimonial.quote}&quot;
-              </p>
-
-              {/* Author */}
-              <div className="flex items-center space-x-4 border-t border-border pt-6">
-                {testimonial.image && (
-                  <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
-                    <Image
-                      src={urlFor(testimonial.image).width(48).height(48).url()}
-                      alt={testimonial.clientName}
-                      fill
-                      className="object-cover"
+            return (
+              <article
+                key={t._id}
+                className="bg-white rounded-xl border border-[#EDE8DF] p-6 sm:p-8 flex flex-col"
+              >
+                <div className="flex gap-0.5 mb-4">
+                  {Array.from({ length: t.rating || 5 }).map((_, i) => (
+                    <Star
+                      key={`${t._id}-star-${i}`}
+                      size={16}
+                      className="fill-[#B8864E] text-[#B8864E]"
                     />
-                  </div>
-                )}
-                <div>
-                  <p className="font-semibold text-foreground">
-                    {testimonial.clientName}
-                  </p>
-                  {testimonial.clientTitle && (
-                    <p className="text-sm text-muted-foreground">
-                      {testimonial.clientTitle}
-                    </p>
-                  )}
+                  ))}
                 </div>
-              </div>
-            </div>
-          ))}
+                <p className="text-[#6B5B4E] italic leading-relaxed flex-1 mb-6">
+                  &ldquo;{quote}&rdquo;
+                </p>
+                <div className="border-t border-[#EDE8DF] pt-5 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-[#B8864E] text-white text-xs font-semibold flex items-center justify-center shrink-0">
+                    {getInitials(name)}
+                  </div>
+                  <div>
+                    <p className="font-medium text-[#1C1612] text-sm">{name}</p>
+                    {subtitle && (
+                      <p className="text-xs text-[#6B5B4E] mt-0.5">{subtitle}</p>
+                    )}
+                  </div>
+                </div>
+              </article>
+            )
+          })}
         </div>
       </div>
     </section>

@@ -1,71 +1,85 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 
+const HERO_IMAGE =
+  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&h=1080&fit=crop'
+
+const stats = [
+  '25+ vite',
+  '1,500+ projekte',
+  '100% me porosi',
+  'Konsultim falas',
+]
+
 export function Hero() {
   return (
-    <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-background via-background to-primary/5">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-10 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 left-20 w-80 h-80 bg-accent/5 rounded-full blur-3xl"></div>
+    <section className="relative min-h-[90vh] flex flex-col">
+      <div className="absolute inset-0">
+        <Image
+          src={HERO_IMAGE}
+          alt="Kuzhinë dhe dhomë ndenjeje Almer"
+          fill
+          priority
+          className="object-cover"
+          sizes="100vw"
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'linear-gradient(to top right, rgba(28,22,18,0.75) 0%, rgba(28,22,18,0.35) 45%, transparent 75%)',
+          }}
+        />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-        <div className="space-y-6 animate-fade-in">
-          {/* Subtitle */}
-          <div className="inline-block">
-            <span className="px-4 py-2 bg-accent/10 border border-accent/30 text-accent rounded-full text-sm font-semibold">
-              Dizajn Premium i Brendshëm
-            </span>
-          </div>
+      <div className="relative z-10 flex-1 flex flex-col justify-end max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pb-28 pt-32">
+        <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-white/80 mb-4 font-medium">
+          Punime artizanale · Tiranë, Shqipëri
+        </p>
+        <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-white leading-[1.1] max-w-3xl mb-6">
+          Mobilje e punuar
+          <br />
+          me dorë, për çdo
+          <br />
+          dhomë të shtëpisë.
+        </h1>
+        <p className="text-base sm:text-lg text-white/70 max-w-lg mb-8 leading-relaxed">
+          Që nga viti 1998, transformojmë hapësirat shqiptare me mobilje me porosi
+          dhe material premium.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+          <Link
+            href="/gallery"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-medium text-white bg-[#B8864E] hover:bg-[#a67845] rounded-full transition-colors"
+          >
+            Shiko punimet
+            <ArrowRight size={16} />
+          </Link>
+          <Link
+            href="/contact"
+            className="inline-flex items-center justify-center px-6 py-3.5 text-sm font-medium text-white border border-white/60 hover:bg-white/10 rounded-full transition-colors"
+          >
+            Ofertë falas
+          </Link>
+        </div>
+      </div>
 
-          {/* Main Heading */}
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-foreground leading-tight">
-            Mobilje Luksi <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary to-accent">
-              Për Shtëpinë Tuaj
-            </span>
-          </h1>
-
-          {/* Subtitle Text */}
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Zbuloni koleksionin tonë ekskluziv të mobiljes luksi të punuar me dorë dhe zgjidhjeve të dizajnit premium të brendshëm të kuruar për shijen më të kërkuese.
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 pt-8">
-            <Link
-              href="/products"
-              className="px-8 py-4 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors duration-200 flex items-center space-x-2 group"
-            >
-              <span>Shfletoni Koleksionin</span>
-              <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link
-              href="/contact"
-              className="px-8 py-4 bg-card border-2 border-primary text-primary font-semibold rounded-lg hover:bg-primary hover:text-primary-foreground transition-all duration-200"
-            >
-              Konsultë Falas
-            </Link>
-          </div>
-
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-4 pt-12 max-w-md mx-auto">
-            <div className="text-center">
-              <p className="text-3xl font-bold text-primary">500+</p>
-              <p className="text-sm text-muted-foreground">Produktet</p>
-            </div>
-            <div className="text-center">
-              <p className="text-3xl font-bold text-accent">1000+</p>
-              <p className="text-sm text-muted-foreground">Klientët</p>
-            </div>
-            <div className="text-center">
-              <p className="text-3xl font-bold text-primary">10 vjet</p>
-              <p className="text-sm text-muted-foreground">Përvojë</p>
-            </div>
+      <div className="relative z-20 bg-white border-t border-[#EDE8DF] py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap items-center justify-center sm:justify-between gap-y-2 gap-x-6 text-sm text-[#1C1612] font-medium">
+            {stats.map((stat, i) => (
+              <span key={stat} className="flex items-center gap-6">
+                {i > 0 && (
+                  <span className="hidden sm:inline text-[#EDE8DF] select-none" aria-hidden>
+                    ·
+                  </span>
+                )}
+                <span>{stat}</span>
+              </span>
+            ))}
           </div>
         </div>
       </div>

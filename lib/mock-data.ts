@@ -1,116 +1,168 @@
-// Të dhëna shëmbëllore për zhvillim - zëvendësimi me të dhëna reale të Sanity kur të jetë konfiguruar
-
 export const mockProducts = [
   {
     _id: '1',
-    name: 'Divan Velur Luksoz',
-    slug: { current: 'luxe-velvet-sofa' },
-    description: 'Një divan kontemporan i mahnitshëm me zë mbi në fabric velur premium.',
+    name: 'Kuzhinë Moderne Ash',
+    slug: { current: 'kuzhine-moderne-ash' },
+    description: 'Kabinete me porosi, ishull qendror dhe sipërfaqe kuarc — dizajn i pastër për familje moderne.',
     images: [
       {
         image: {
-          asset: { url: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&h=500&fit=crop' },
+          asset: {
+            url: 'https://images.unsplash.com/photo-1556912173-46c7f0a8c9c5?w=800&h=500&fit=crop',
+          },
         },
-        alt: 'Divan Velur Luksoz',
+        alt: 'Kuzhinë Moderne Ash',
       },
     ],
-    category: 'sofas',
-    price: 3500,
+    category: 'kuzhina',
   },
   {
     _id: '2',
-    name: 'Tavolë Kafeje Mermeri',
-    slug: { current: 'marble-coffee-table' },
-    description: 'Një tavolë kafeje me majë mermeri me kornizë arjendi vërtet e mahnitshme.',
+    name: 'Gardërobë Walk-in Lisi',
+    slug: { current: 'garderobe-walk-in-lisi' },
+    description: 'Gardërobë e integruar me ndriçim LED dhe organizim të personalizuar.',
     images: [
       {
         image: {
-          asset: { url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=500&fit=crop' },
+          asset: {
+            url: 'https://images.unsplash.com/photo-1616594039964-40861a91a042?w=800&h=500&fit=crop',
+          },
         },
-        alt: 'Tavolë Kafeje Mermeri',
+        alt: 'Gardërobë Walk-in',
       },
     ],
-    category: 'tables',
-    price: 1200,
+    category: 'dhoma-gjumi',
   },
   {
     _id: '3',
-    name: 'Karrige Lëkure Puna',
-    slug: { current: 'leather-accent-chair' },
-    description: 'Një karrige puna lëkure e sofistikuar e përsosur për çdo vend këndore leximi.',
+    name: 'Bibliotekë & TV Wall',
+    slug: { current: 'biblioteke-tv-wall' },
+    description: 'Mobilje murale për dhomën e ndenjes me dru lisi natyral dhe hapësira të fshehura.',
     images: [
       {
         image: {
-          asset: { url: 'https://images.unsplash.com/photo-1592078615290-033ee584e267?w=500&h=500&fit=crop' },
+          asset: {
+            url: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&h=500&fit=crop',
+          },
         },
-        alt: 'Karrige Lëkure Puna',
+        alt: 'Bibliotekë TV Wall',
       },
     ],
-    category: 'chairs',
-    price: 1800,
+    category: 'dhoma-ndenje',
   },
   {
     _id: '4',
-    name: 'Llambë Dyshemeje Arjendi',
-    slug: { current: 'brass-floor-lamp' },
-    description: 'Një llambë dyshemeje arjendi elegante me dizajn skulptural.',
+    name: 'Dyer Dyshemeje Premium',
+    slug: { current: 'dyer-dyshemeje-premium' },
+    description: 'Dyer të brendshme me kornizë druri masiv dhe xham mat — instalim i përfshirë.',
     images: [
       {
         image: {
-          asset: { url: 'https://images.unsplash.com/photo-1565636192335-14e06420265e?w=500&h=500&fit=crop' },
+          asset: {
+            url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=500&fit=crop',
+          },
         },
-        alt: 'Llambë Dyshemeje Arjendi',
+        alt: 'Dyer Premium',
       },
     ],
-    category: 'lighting',
-    price: 650,
+    category: 'dyer-dritare',
+  },
+  {
+    _id: '5',
+    name: 'Tavolinë Zjarri Ash',
+    slug: { current: 'tavoline-zjarri-ash' },
+    description: 'Tavolinë ngrënieje me bazë druri dhe sipërfaqe guri — për 6–8 persona.',
+    images: [
+      {
+        image: {
+          asset: {
+            url: 'https://images.unsplash.com/photo-1617806118233-18e1de247200?w=800&h=500&fit=crop',
+          },
+        },
+        alt: 'Tavolinë Zjarri',
+      },
+    ],
+    category: 'tavolina',
+  },
+  {
+    _id: '6',
+    name: 'Apartament i Plotë — Bllok',
+    slug: { current: 'apartament-i-plote-bllok' },
+    description: 'Arredim i plotë për apartament 85m² — kuzhinë, dhoma, banjo dhe hapësira ndenjeje.',
+    images: [
+      {
+        image: {
+          asset: {
+            url: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&h=500&fit=crop',
+          },
+        },
+        alt: 'Apartament i Plotë',
+      },
+    ],
+    category: 'shtepi-e-plote',
+  },
+]
+
+export const mockOffers = [
+  {
+    _id: 'offer-1',
+    discount: '–15%',
+    title: 'Kuzhinat e vjeshtës',
+    expiry: '30 Qershor 2026',
+    href: '/products?offer=spring',
   },
 ]
 
 export const mockServices = [
   {
     _id: '1',
-    name: 'Konsultë Dizajni i Brendshëm',
-    slug: { current: 'interior-design-consultation' },
-    description: 'Konsultë e ekspertit për të transformuar hapësirat tuaja jetese me mobilje luksoz dhe dizajn.',
+    title: 'Kuzhinat me porosi',
+    slug: { current: 'kuzhina-me-porosi' },
+    description: 'Kabinete, ishuj dhe sipërfaqe pune të dizajnuara për hapësirën dhe stilin tuaj.',
+    icon: '🍳',
+    features: ['Kabinete me porosi', 'Ishuj & sipërfaqe', 'Planifikim 3D falas'],
   },
   {
     _id: '2',
-    name: 'Dizajni Custom i Mobiljes',
-    slug: { current: 'custom-furniture-design' },
-    description: 'Pjesë mobilje bespoke të punuara sipas specifikimeve tuaja të sakta.',
+    title: 'Dhoma gjumi',
+    slug: { current: 'dhoma-gjumi' },
+    description: 'Shtretër, gardëroba dhe mobilje plotësuese për një dhomë gjumi harmonike.',
+    icon: '🛏️',
+    features: ['Gardëroba walk-in', 'Krevat & komodinë', 'Ndriçim i integruar'],
   },
   {
     _id: '3',
-    name: 'Planifikimi i Hapësirës dhe Plani',
-    slug: { current: 'space-planning-layout' },
-    description: 'Planifikimi profesional i hapësirës për të maksimizuar funksionalitetin dhe estetikën.',
-  },
-  {
-    _id: '4',
-    name: 'Instalimi dhe Dërgimi i Mobiljes',
-    slug: { current: 'furniture-installation-delivery' },
-    description: 'Shërbime profesionale të dërgimit dhe instalimit për mobiljen tuaj.',
+    title: 'Arredim i plotë',
+    slug: { current: 'arredim-i-plote' },
+    description: 'Çdo dhomë, një projekt — nga koncepti deri te montimi final nga ekipi ynë.',
+    icon: '🏠',
+    features: ['Dizajn i gjithë shtëpisë', 'Koordinim i projektit', 'Montim & garanci'],
   },
 ]
 
 export const mockTestimonials = [
   {
     _id: '1',
-    author: 'Lindita Shtypi',
-    text: 'Ekipi transformoi dhomën time të ndenjes në një strehim. Çdo pjesë u zgjodh me kujdes dhe vëmendja ndaj detajit është e paraleljen.',
+    clientName: 'Lindita Shtypi',
+    clientTitle: 'Tiranë · Kuzhinë',
+    quote:
+      'Ekipi transformoi kuzhinën tonë në një hapësirë që e përdorim çdo ditë me krenari. Cilësia e drurit dhe precizioni i montimit janë të jashtëzakonshme.',
     rating: 5,
   },
   {
     _id: '2',
-    author: 'Fatos Bardhi',
-    text: 'Nga përzgjedhja në instalim, shërbimi ishte pa ndërprerje. Jam shumë i kënaqur me koleksionin e ri të mobiljes.',
+    clientName: 'Fatos Bardhi',
+    clientTitle: 'Durrës · Arredim i plotë',
+    quote:
+      'Nga konsulta fillestare deri te dorëzimi, gjithçka ishte profesionale. Mobiljet duken sikur janë bërë për shtëpinë tonë — sepse janë.',
     rating: 5,
   },
   {
     _id: '3',
-    author: 'Arjola Kola',
-    text: 'Cilësi premium në nivelin më të lartë. Artezonësia është evidente në çdo pjesë. Shumë të rekomanduar!',
+    clientName: 'Arjola Kola',
+    clientTitle: 'Tiranë · Dhoma gjumi',
+    quote:
+      'Gardëroba walk-in dhe mobiljet e dhomës së gjumit tejkaluan pritshmëritë. Rekomandoj Almer pa hezitim.',
     rating: 5,
   },
 ]
@@ -118,18 +170,71 @@ export const mockTestimonials = [
 export const mockNews = [
   {
     _id: '1',
-    title: 'Lançimi i Koleksionit të Ri: Luksi i Qëndrueshëm',
-    slug: { current: 'new-collection-sustainable-luxury' },
-    excerpt: 'Përfaqësimi i koleksionit tonë luksoz miqësor me materiale të zbulesuar në mënyrë të qëndrueshme.',
-    author: 'Admin',
-    publishedAt: '2024-05-01',
+    title: 'Projekti i ri: Kuzhinë në Bllok',
+    slug: { current: 'projekti-kuzhine-bllok' },
+    excerpt: 'Transformim i plotë i një kuzhine 18m² me dru lisi dhe sipërfaqe kuarc.',
+    publishedAt: '2026-04-10',
+    tag: 'Projekt',
   },
   {
     _id: '2',
-    title: 'Tendencat e Dizajnit të Brendshëm 2024',
-    slug: { current: 'interior-design-trends-2024' },
-    excerpt: 'Zbuloni tendencat kryesore të dizajnit të brendshëm që formësojnë shtëpitë moderne këtë vit.',
-    author: 'Admin',
-    publishedAt: '2024-04-15',
+    title: 'Materialet premium që përdorim',
+    slug: { current: 'materialet-premium' },
+    excerpt: 'Një vështrim i afërt te druri shqiptar dhe europian në punimet tona.',
+    publishedAt: '2026-03-22',
+    tag: 'Lajm',
   },
+]
+
+export const mockGallery = [
+  {
+    _id: 'g1',
+    title: 'Kuzhinë Moderne',
+    location: 'Tiranë, Bllok',
+    image:
+      'https://images.unsplash.com/photo-1556912173-46c7f0a8c9c5?w=600&h=900&fit=crop',
+    tall: true,
+  },
+  {
+    _id: 'g2',
+    title: 'Dhoma Gjumi Ash',
+    location: 'Tiranë',
+    image:
+      'https://images.unsplash.com/photo-1616594039964-40861a91a042?w=600&h=400&fit=crop',
+    tall: false,
+  },
+  {
+    _id: 'g3',
+    title: 'Dhoma Ndenjeje',
+    location: 'Durrës',
+    image:
+      'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=600&h=400&fit=crop',
+    tall: false,
+  },
+  {
+    _id: 'g4',
+    title: 'Dyer & Detaje',
+    location: 'Tiranë',
+    image:
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=400&fit=crop',
+    tall: false,
+  },
+]
+
+export const CATEGORY_LABELS: Record<string, string> = {
+  kuzhina: 'Kuzhinat',
+  'dhoma-gjumi': 'Dhoma gjumi',
+  'dhoma-ndenje': 'Dhoma ndenje',
+  'dyer-dritare': 'Dyer & dritare',
+  tavolina: 'Tavolina',
+  'shtepi-e-plote': 'Shtëpi e plotë',
+}
+
+export const CATEGORY_SLUGS = [
+  { slug: 'kuzhina', label: 'Kuzhinat' },
+  { slug: 'dhoma-gjumi', label: 'Dhoma gjumi' },
+  { slug: 'dhoma-ndenje', label: 'Dhoma ndenje' },
+  { slug: 'dyer-dritare', label: 'Dyer & dritare' },
+  { slug: 'tavolina', label: 'Tavolina' },
+  { slug: 'shtepi-e-plote', label: 'Shtëpi e plotë' },
 ]
