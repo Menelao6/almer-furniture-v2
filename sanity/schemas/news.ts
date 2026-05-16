@@ -48,17 +48,16 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
     {
-      name: 'category',
-      title: 'Category',
+      name: 'tag',
+      title: 'Tag',
       type: 'string',
       options: {
         list: [
-          { title: 'Design Trends', value: 'design' },
-          { title: 'Interior Tips', value: 'tips' },
-          { title: 'New Collections', value: 'collections' },
-          { title: 'News', value: 'news' },
+          { title: 'Projekt', value: 'Projekt' },
+          { title: 'Lajm', value: 'Lajm' },
         ],
       },
+      initialValue: 'Lajm',
     },
   ],
   preview: {

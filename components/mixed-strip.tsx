@@ -4,41 +4,25 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRef } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { CATEGORY_LABELS } from '@/lib/mock-data'
-
-interface Product {
-  _id: string
-  name: string
-  slug: { current: string }
-  description?: string
-  images?: { image: { asset?: { url?: string } } }[]
-  category: string
-}
-
-interface Offer {
-  _id: string
-  discount: string
-  title: string
-  expiry: string
-  href: string
-}
-
-interface NewsItem {
-  _id: string
-  title: string
-  slug: { current: string }
-  publishedAt: string
-  tag?: string
-}
+import type { SanityProduct, SanityOffer, SanityNews } from '@/lib/sanity.types'
 
 interface MixedStripProps {
-  products: Product[]
-  offers: Offer[]
-  news: NewsItem[]
+  products: SanityProduct[]
+  offers: SanityOffer[]
+  news: SanityNews[]
 }
 
-function getImageUrl(product: Product) {
+function getImageUrl(product: SanityProduct) {
   return product.images?.[0]?.image?.asset?.url ?? ''
+}
+
+function formatExpiry(expiry: string) {
+  if (!expiry) return ''
+  return new Date(expiry).toLocaleDateString('sq-AL', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })
 }
 
 export function MixedStrip({ products, offers, news }: MixedStripProps) {
@@ -54,8 +38,8 @@ export function MixedStrip({ products, offers, news }: MixedStripProps) {
   }
 
   const p0 = products[0]
-  const p1 = products[1] ?? products[0]
-  const p2 = products[2] ?? products[0]
+  const p1 = products[1]
+  const p2 = products[2]
   const offer = offers[0]
   const newsItem = news[0]
 
@@ -93,7 +77,7 @@ export function MixedStrip({ products, offers, news }: MixedStripProps) {
           {p0 && (
             <ProductStripCard
               name={p0.name}
-              category={CATEGORY_LABELS[p0.category] ?? p0.category}
+              category={p0.category?.title ?? ''}
               image={getImageUrl(p0)}
               href={`/products/${p0.slug.current}`}
               width="w-[260px] sm:w-[280px]"
@@ -103,7 +87,7 @@ export function MixedStrip({ products, offers, news }: MixedStripProps) {
           {p1 && (
             <ProductStripCard
               name={p1.name}
-              category={CATEGORY_LABELS[p1.category] ?? p1.category}
+              category={p1.category?.title ?? ''}
               image={getImageUrl(p1)}
               href={`/products/${p1.slug.current}`}
               width="w-[240px] sm:w-[260px]"
@@ -113,7 +97,7 @@ export function MixedStrip({ products, offers, news }: MixedStripProps) {
           {p2 && (
             <ProductStripCard
               name={p2.name}
-              category={CATEGORY_LABELS[p2.category] ?? p2.category}
+              category={p2.category?.title ?? ''}
               image={getImageUrl(p2)}
               href={`/products/${p2.slug.current}`}
               width="w-[260px] sm:w-[280px]"
@@ -154,14 +138,16 @@ function ProductStripCard({
       className={`${width} shrink-0 snap-start h-[320px] flex flex-col bg-white rounded-xl border border-[#EDE8DF] overflow-hidden hover:border-[#B8864E] hover:shadow-md transition-all group`}
     >
       <div className="relative flex-1 min-h-[180px] bg-[#EDE8DF]">
-        {image && (
+        {image ? (
           <Image src={image} alt={name} fill className="object-cover" sizes="280px" />
-        )}
+        ) : null}
       </div>
       <div className="p-4">
-        <p className="text-xs uppercase tracking-wider text-[#B8864E] font-medium mb-1">
-          {category}
-        </p>
+        {category ? (
+          <p className="text-xs uppercase tracking-wider text-[#B8864E] font-medium mb-1">
+            {category}
+          </p>
+        ) : null}
         <h3 className="font-serif text-lg text-[#1C1612] line-clamp-2 mb-2">{name}</h3>
         <span className="text-sm text-[#B8864E] group-hover:underline">Shiko →</span>
       </div>
@@ -169,7 +155,7 @@ function ProductStripCard({
   )
 }
 
-function OfferStripCard({ offer }: { offer: Offer }) {
+function OfferStripCard({ offer }: { offer: SanityOffer }) {
   return (
     <Link
       href={offer.href}
@@ -181,14 +167,16 @@ function OfferStripCard({ offer }: { offer: Offer }) {
         <h3 className="font-serif text-xl leading-snug">{offer.title}</h3>
       </div>
       <div>
-        <p className="text-xs text-white/70 mb-4">Deri më {offer.expiry}</p>
+        {offer.expiry ? (
+          <p className="text-xs text-white/70 mb-4">Deri më {formatExpiry(offer.expiry)}</p>
+        ) : null}
         <span className="text-sm font-medium group-hover:underline">Shiko ofertën →</span>
       </div>
     </Link>
   )
 }
 
-function NewsStripCard({ item }: { item: NewsItem }) {
+function NewsStripCard({ item }: { item: SanityNews }) {
   const date = new Date(item.publishedAt).toLocaleDateString('sq-AL', {
     day: 'numeric',
     month: 'short',
@@ -226,4 +214,3 @@ function SeeAllCard() {
     </Link>
   )
 }
-

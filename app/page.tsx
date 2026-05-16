@@ -10,15 +10,25 @@ import { ServicesSection } from '@/components/services-section'
 import { GalleryTeaser } from '@/components/gallery-teaser'
 import { Testimonials } from '@/components/testimonials'
 import { CTASection } from '@/components/cta-section'
-import { sanityFetch } from '@/lib/sanity.client'
+import { sanityFetchList } from '@/lib/sanity.client'
 import {
-  mockProducts,
-  mockServices,
-  mockTestimonials,
-  mockNews,
-  mockOffers,
-  mockGallery,
-} from '@/lib/mock-data'
+  featuredProductsQuery,
+  productCategoriesQuery,
+  featuredServicesQuery,
+  testimonialsQuery,
+  latestNewsQuery,
+  activeOffersQuery,
+  homeGalleryQuery,
+} from '@/lib/sanity.queries'
+import type {
+  SanityProduct,
+  SanityOffer,
+  SanityNews,
+  SanityGalleryItem,
+  SanityService,
+  SanityTestimonial,
+  ProductCategory,
+} from '@/lib/sanity.types'
 
 export const metadata: Metadata = {
   title: 'Almer | Mobilje Artizanale · Tiranë',
@@ -27,70 +37,26 @@ export const metadata: Metadata = {
 }
 
 async function getHomePageData() {
-  try {
-    const [products, services, testimonials, news] = await Promise.all([
-      sanityFetch({
-        query: `*[_type == "product" && featured == true][0:8] | order(_createdAt desc) {
-          _id,
-          name,
-          slug { current },
-          description,
-          "images": images[] { image { asset->{url} }, alt },
-          category
-        }`,
-      }),
-      sanityFetch({
-        query: `*[_type == "service"][0:4] {
-          _id,
-          title,
-          slug { current },
-          description,
-          icon
-        }`,
-      }),
-      sanityFetch({
-        query: `*[_type == "testimonial"][0:6] {
-          _id,
-          clientName,
-          clientTitle,
-          quote,
-          rating
-        }`,
-      }),
-      sanityFetch({
-        query: `*[_type == "news"][0:6] {
-          _id,
-          title,
-          slug { current },
-          excerpt,
-          publishedAt
-        }`,
-      }),
+  const [products, categories, services, testimonials, news, offers, gallery] =
+    await Promise.all([
+      sanityFetchList<SanityProduct>({ query: featuredProductsQuery }),
+      sanityFetchList<ProductCategory>({ query: productCategoriesQuery }),
+      sanityFetchList<SanityService>({ query: featuredServicesQuery }),
+      sanityFetchList<SanityTestimonial>({ query: testimonialsQuery }),
+      sanityFetchList<SanityNews>({ query: latestNewsQuery }),
+      sanityFetchList<SanityOffer>({ query: activeOffersQuery }),
+      sanityFetchList<SanityGalleryItem>({ query: homeGalleryQuery }),
     ])
 
-    return {
-      products: products?.length > 0 ? products : mockProducts,
-      services: services?.length > 0 ? services : mockServices,
-      testimonials: testimonials?.length > 0 ? testimonials : mockTestimonials,
-      news: news?.length > 0 ? news : mockNews,
-      offers: mockOffers,
-      gallery: mockGallery,
-    }
-  } catch {
-    return {
-      products: mockProducts,
-      services: mockServices,
-      testimonials: mockTestimonials,
-      news: mockNews,
-      offers: mockOffers,
-      gallery: mockGallery,
-    }
-  }
+  return { products, categories, services, testimonials, news, offers, gallery }
 }
 
 export default async function Home() {
-  const { products, services, testimonials, news, offers, gallery } =
+  const { products, categories, services, testimonials, news, offers, gallery } =
     await getHomePageData()
+
+  const showMixedStrip =
+    products.length > 0 || offers.length > 0 || news.length > 0
 
   return (
     <>
@@ -98,11 +64,15 @@ export default async function Home() {
       <main>
         <Hero />
         <TrustStrip />
-        <MixedStrip products={products} offers={offers} news={news} />
-        {products.length > 0 && <FeaturedProducts products={products} />}
+        {showMixedStrip && (
+          <MixedStrip products={products} offers={offers} news={news} />
+        )}
+        {products.length > 0 && (
+          <FeaturedProducts products={products} categories={categories} />
+        )}
         <AboutStrip />
-        <ServicesSection services={services} />
-        <GalleryTeaser items={gallery} />
+        {services.length > 0 && <ServicesSection services={services} />}
+        {gallery.length > 0 && <GalleryTeaser items={gallery} />}
         {testimonials.length > 0 && (
           <Testimonials testimonials={testimonials} />
         )}
