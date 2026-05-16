@@ -85,18 +85,8 @@ export default {
     {
       name: 'category',
       title: 'Category',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'Sofas', value: 'sofas' },
-          { title: 'Chairs', value: 'chairs' },
-          { title: 'Tables', value: 'tables' },
-          { title: 'Beds', value: 'beds' },
-          { title: 'Storage', value: 'storage' },
-          { title: 'Lighting', value: 'lighting' },
-          { title: 'Accessories', value: 'accessories' },
-        ],
-      },
+      type: 'reference',
+      to: [{ type: 'productCategory' }],
     },
     {
       name: 'featured',

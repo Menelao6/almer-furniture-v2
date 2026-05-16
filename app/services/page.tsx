@@ -1,145 +1,99 @@
+import Link from 'next/link'
+import { Metadata } from 'next'
 import { Navigation } from '@/components/nav'
 import { Footer } from '@/components/footer'
 import { ServiceCard } from '@/components/service-card'
 import { CheckCircle } from 'lucide-react'
+import { sanityFetchList } from '@/lib/sanity.client'
+import { allServicesQuery } from '@/lib/sanity.queries'
+import type { SanityService } from '@/lib/sanity.types'
 
-const dummyServices = [
-  {
-    _id: '1',
-    title: 'Konsultë Dizajni i Brendshëm',
-    slug: { current: 'interior-design' },
-    description: 'Konsultë profesionale për transformimin e hapësirës tuaj.',
-    icon: 'Palette',
-    image: null,
-  },
-  {
-    _id: '2',
-    title: 'Kurimi i Mobiljes',
-    slug: { current: 'furniture-curation' },
-    description: 'Përzgjedhje eksperte e pjesëve të përshtatura me stilin tuaj.',
-    icon: 'Sofa',
-    image: null,
-  },
-  {
-    _id: '3',
-    title: 'Fabrikimi Custom',
-    slug: { current: 'custom-fabrication' },
-    description: 'Mobilje bespoke të punuara sipas specifikimeve tuaja të sakta.',
-    icon: 'Hammer',
-    image: null,
-  },
-  {
-    _id: '4',
-    title: 'Vizualizimi 3D i Dizajnit',
-    slug: { current: '3d-visualization' },
-    description: 'Shikoni hapësirën tuaj përpara se të bëni ndonjë ndryshim.',
-    icon: 'Sparkles',
-    image: null,
-  },
-  {
-    _id: '5',
-    title: 'Menaxhimi i Projektit',
-    slug: { current: 'project-management' },
-    description: 'Koordinimi end-to-end i projektit të brendshëm.',
-    icon: 'Users',
-    image: null,
-  },
-  {
-    _id: '6',
-    title: 'Dërgim & Instalim',
-    slug: { current: 'delivery-installation' },
-    description: 'Dërgim profesional dhe instalim pa ndërprerje.',
-    icon: 'Truck',
-    image: null,
-  },
-]
+export const metadata: Metadata = {
+  title: 'Shërbimet | Almer',
+  description: 'Kuzhina me porosi, dhoma gjumi, arredim i plotë dhe më shumë — nga dizajni deri te montimi.',
+}
 
 const process = [
   {
     number: '01',
     title: 'Konsultë',
-    description: 'Fillojmë duke kuptuar vizionin tuaj, preferencat e stilit dhe buxhetin për të krijuar një bazë të fortë për projektin tuaj.',
+    description:
+      'Fillojmë duke kuptuar vizionin, stilin dhe buxhetin tuaj për një bazë të fortë projekti.',
   },
   {
     number: '02',
-    title: 'Dizajn & Planifikimi',
-    description: 'Ekipi ynë zhvillon dizajne të detajuar dhe vizualizime 3D, duke paraqitur opsione të shumta për shqyrtim.',
+    title: 'Dizajn & Planifikim',
+    description: 'Zhvillojmë plane dhe vizualizime 3D për të parë hapësirën para prodhimit.',
   },
   {
     number: '03',
-    title: 'Përzgjedhja & Urdhërim',
-    description: 'Ju udhëzojmë përmes përzgjedhjes së pjesëve dhe menaxhojmë të gjitha urdhërimet, kontrollet e cilësisë dhe logjistikën.',
+    title: 'Prodhim & Urdhër',
+    description: 'Punojmë mobiljen me porosi me kontroll cilësie në çdo fazë.',
   },
   {
     number: '04',
-    title: 'Instalimi & Stil',
-    description: 'Instalim profesional i ndjekur nga puna përfundimtare e stilit për ta sjellë vizionin tuaj në jetë në mënyrë të përsosur.',
+    title: 'Montim',
+    description: 'Instalim profesional nga ekipi ynë — garanci në çdo punë.',
   },
 ]
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const services = await sanityFetchList<SanityService>({ query: allServicesQuery })
+
   return (
     <>
       <Navigation />
       <main>
-        {/* Header */}
-        <section className="bg-gradient-to-br from-background via-background to-primary/5 py-16">
+        <section className="bg-[#FAF7F2] py-16 border-b border-[#EDE8DF]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-5xl md:text-6xl font-serif font-bold text-foreground mb-4">
-              Our Services
-            </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl">
-              Comprehensive interior design and furniture services to transform your space.
+            <h1 className="font-serif text-4xl md:text-5xl text-[#1C1612] mb-4">Shërbimet tona</h1>
+            <p className="text-lg text-[#6B5B4E] max-w-2xl">
+              Nga kuzhina me porosi deri te arredimi i plotë i shtëpisë — një ekip, një standard premium.
             </p>
           </div>
         </section>
 
-        {/* Services Grid */}
-        <section className="py-16">
+        <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              {dummyServices.map((service) => (
-                <ServiceCard
-                  key={service._id}
-                  title={service.title}
-                  description={service.description}
-                  icon={service.icon}
-                  image={service.image}
-                />
-              ))}
-            </div>
+            {services.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {services.map((service) => (
+                  <ServiceCard
+                    key={service._id}
+                    title={service.title}
+                    description={service.description ?? ''}
+                    icon={service.icon}
+                    features={service.features}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-[#6B5B4E] py-12">
+                Nuk ka shërbime të publikuara ende. Shtoni shërbime në Sanity Studio.
+              </p>
+            )}
           </div>
         </section>
 
-        {/* Process Section */}
-        <section className="py-20 bg-card">
+        <section className="py-20 bg-[#FAF7F2]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-serif font-bold text-foreground mb-4">
-                Our Process
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                A streamlined approach to bringing your interior design dreams to reality.
+              <h2 className="font-serif text-3xl md:text-4xl text-[#1C1612] mb-4">Si punojmë</h2>
+              <p className="text-lg text-[#6B5B4E] max-w-2xl mx-auto">
+                Një proces i qartë nga konsulta fillestare deri te montimi final.
               </p>
             </div>
-
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {process.map((step, index) => (
-                <div key={index} className="relative">
-                  {/* Connector Line */}
-                  {index < process.length - 1 && (
-                    <div className="hidden lg:block absolute top-16 left-[50%] w-full h-0.5 bg-gradient-to-r from-primary to-transparent"></div>
-                  )}
-
-                  {/* Card */}
-                  <div className="relative bg-background rounded-lg border border-border p-8 h-full">
-                    <div className="flex items-center justify-center w-14 h-14 rounded-full bg-primary text-primary-foreground font-bold text-xl mb-4 mx-auto">
+                <div key={step.number} className="relative">
+                  <div className="bg-white rounded-xl border border-[#EDE8DF] p-8 h-full">
+                    <div className="flex items-center justify-center w-14 h-14 rounded-full bg-[#B8864E] text-white font-bold text-xl mb-4 mx-auto">
                       {step.number}
                     </div>
-                    <h3 className="font-serif text-xl font-semibold text-foreground text-center mb-3">
+                    <h3 className="font-serif text-xl text-[#1C1612] text-center mb-3">
                       {step.title}
                     </h3>
-                    <p className="text-muted-foreground text-center text-sm">
+                    <p className="text-[#6B5B4E] text-center text-sm leading-relaxed">
                       {step.description}
                     </p>
                   </div>
@@ -149,52 +103,45 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        {/* Benefits Section */}
-        <section className="py-20">
+        <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
-                <h2 className="text-4xl font-serif font-bold text-foreground mb-8">
-                  Why Choose Us?
-                </h2>
+                <h2 className="font-serif text-3xl text-[#1C1612] mb-8">Pse Almer?</h2>
                 <div className="space-y-4">
                   {[
-                    'Expert team with 10+ years of experience',
-                    'Access to premium furniture collections',
-                    '3D design visualization before execution',
-                    'Professional installation and support',
-                    'Flexible payment and delivery options',
-                    'Aftercare and maintenance guidance',
-                  ].map((benefit, idx) => (
-                    <div key={idx} className="flex items-start space-x-3">
-                      <CheckCircle className="text-accent flex-shrink-0 mt-1" size={20} />
-                      <p className="text-lg text-foreground">{benefit}</p>
+                    'Më shumë se 25 vite përvojë në zejtarinë shqiptare',
+                    'Druri premium i zgjedhur me dorë',
+                    'Planifikim 3D dhe konsultë falas',
+                    'Montim profesional nga ekipi ynë',
+                    'Garanci në çdo punë',
+                  ].map((benefit) => (
+                    <div key={benefit} className="flex items-start gap-3">
+                      <CheckCircle className="text-[#B8864E] shrink-0 mt-1" size={20} />
+                      <p className="text-[#1C1612]">{benefit}</p>
                     </div>
                   ))}
                 </div>
               </div>
-              <div className="rounded-lg overflow-hidden aspect-square bg-muted border-4 border-accent/20 flex items-center justify-center">
-                <p className="text-muted-foreground">Image placeholder</p>
-              </div>
+              <div className="rounded-2xl aspect-square bg-[#EDE8DF] border border-[#EDE8DF]" />
             </div>
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="py-20 bg-gradient-to-r from-primary to-accent">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-primary-foreground mb-6">
-              Ready to Start Your Project?
+        <section className="py-20 bg-[#1C1612]">
+          <div className="max-w-4xl mx-auto px-4 text-center">
+            <h2 className="font-serif text-3xl md:text-4xl text-[#FAF7F2] mb-6">
+              Gati të filloni projektin?
             </h2>
-            <p className="text-lg text-primary-foreground/90 mb-8 max-w-2xl mx-auto">
-              Let&apos;s discuss how we can help transform your space into something extraordinary.
+            <p className="text-[#FAF7F2]/70 mb-8 max-w-2xl mx-auto">
+              Rezervoni një konsultë falas dhe le të diskutojmë për hapësirën tuaj.
             </p>
-            <a
+            <Link
               href="/contact"
-              className="inline-block px-8 py-4 bg-primary-foreground text-primary font-semibold rounded-lg hover:bg-primary-foreground/90 transition-colors duration-200"
+              className="inline-block px-8 py-3.5 bg-[#B8864E] text-white font-medium rounded-full hover:bg-[#a67845] transition-colors"
             >
-              Schedule Consultation
-            </a>
+              Konsultë falas
+            </Link>
           </div>
         </section>
       </main>

@@ -3,26 +3,18 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { ProductCard } from './product-card'
-import { CATEGORY_SLUGS } from '@/lib/mock-data'
-
-interface Product {
-  _id: string
-  name: string
-  slug: { current: string }
-  description: string
-  images: { image: unknown }[]
-  category: string
-}
+import type { SanityProduct, ProductCategory } from '@/lib/sanity.types'
 
 interface FeaturedProductsProps {
-  products: Product[]
+  products: SanityProduct[]
+  categories: ProductCategory[]
 }
 
-export function FeaturedProducts({ products }: FeaturedProductsProps) {
+export function FeaturedProducts({ products, categories }: FeaturedProductsProps) {
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
 
   const filtered = activeCategory
-    ? products.filter((p) => p.category === activeCategory)
+    ? products.filter((p) => p.category?.slug === activeCategory)
     : products
 
   const display = filtered.slice(0, 4)
@@ -40,33 +32,35 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
           </Link>
         </div>
 
-        <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2 mb-10 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap">
-          <button
-            type="button"
-            onClick={() => setActiveCategory(null)}
-            className={`shrink-0 px-4 py-2 text-sm rounded-full border transition-colors ${
-              activeCategory === null
-                ? 'bg-[#B8864E] text-white border-[#B8864E]'
-                : 'bg-white text-[#6B5B4E] border-[#EDE8DF] hover:bg-[#B8864E] hover:text-white hover:border-[#B8864E]'
-            }`}
-          >
-            Të gjitha
-          </button>
-          {CATEGORY_SLUGS.map((cat) => (
+        {categories.length > 0 && (
+          <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2 mb-10 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap">
             <button
-              key={cat.slug}
               type="button"
-              onClick={() => setActiveCategory(cat.slug)}
+              onClick={() => setActiveCategory(null)}
               className={`shrink-0 px-4 py-2 text-sm rounded-full border transition-colors ${
-                activeCategory === cat.slug
+                activeCategory === null
                   ? 'bg-[#B8864E] text-white border-[#B8864E]'
                   : 'bg-white text-[#6B5B4E] border-[#EDE8DF] hover:bg-[#B8864E] hover:text-white hover:border-[#B8864E]'
               }`}
             >
-              {cat.label}
+              Të gjitha
             </button>
-          ))}
-        </div>
+            {categories.map((cat) => (
+              <button
+                key={cat._id}
+                type="button"
+                onClick={() => setActiveCategory(cat.slug)}
+                className={`shrink-0 px-4 py-2 text-sm rounded-full border transition-colors ${
+                  activeCategory === cat.slug
+                    ? 'bg-[#B8864E] text-white border-[#B8864E]'
+                    : 'bg-white text-[#6B5B4E] border-[#EDE8DF] hover:bg-[#B8864E] hover:text-white hover:border-[#B8864E]'
+                }`}
+              >
+                {cat.title}
+              </button>
+            ))}
+          </div>
+        )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {display.map((product) => (
@@ -75,7 +69,7 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
               id={product._id}
               name={product.name}
               slug={product.slug.current}
-              description={product.description}
+              description={product.description ?? ''}
               image={product.images?.[0]?.image}
               category={product.category}
             />

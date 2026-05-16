@@ -1,102 +1,96 @@
 import Image from 'next/image'
+import { Metadata } from 'next'
 import { Navigation } from '@/components/nav'
 import { Footer } from '@/components/footer'
 import { Award, Users, Globe, Heart } from 'lucide-react'
+import { sanityFetchList } from '@/lib/sanity.client'
+import { teamQuery } from '@/lib/sanity.queries'
+import { urlFor } from '@/lib/sanity.image'
+import type { SanityTeamMember } from '@/lib/sanity.types'
 
-const dummyTeam = [
-  { _id: '1', name: 'Sara Jonson', position: 'Themelues & Drejtore Kreative', bio: 'Me më shumë se 15 vjet përvojë në dizajnin e brendshëm të luksosit.', image: null },
-  { _id: '2', name: 'Mikel Çen', position: 'Dizajneri Kryesor', bio: 'I specializuar në estetika kontempore dhe minimalisht.', image: null },
-  { _id: '3', name: 'Arjola Kola', position: 'Konsultuese Dizajni', bio: 'Eksperte në zgjidhje të dizajnit të qëndrueshëm dhe miqësor me mjedisin.', image: null },
-  { _id: '4', name: 'Davit Parku', position: 'Menaxher Projekti', bio: 'Siguron që çdo projekt të ekzekutohet në përsosmëri.', image: null },
-]
+export const metadata: Metadata = {
+  title: 'Rreth Nesh | Almer',
+  description: 'Zejtari shqiptar që nga 1998 — mobilje me porosi, druri premium, garanci në çdo punë.',
+}
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const team = await sanityFetchList<SanityTeamMember>({ query: teamQuery })
+
   return (
     <>
       <Navigation />
       <main>
-        {/* Header */}
-        <section className="bg-gradient-to-br from-background via-background to-primary/5 py-16">
+        <section className="bg-[#FAF7F2] py-16 border-b border-[#EDE8DF]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-5xl md:text-6xl font-serif font-bold text-foreground mb-4">
-              Rreth Luksit
-            </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl">
-              Duke krijuar hapësira të bukura me mobilje premium dhe shërbim të përcaktuar.
+            <h1 className="font-serif text-4xl md:text-5xl text-[#1C1612] mb-4">Rreth Almer</h1>
+            <p className="text-lg text-[#6B5B4E] max-w-2xl">
+              Zejtari shqiptar që nga 1998 — mobilje me porosi, druri premium, pa kompromise.
             </p>
           </div>
         </section>
 
-        {/* Story Section */}
-        <section className="py-20">
+        <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
-                <h2 className="text-4xl font-serif font-bold text-foreground mb-6">
-                  Historia Jonë
-                </h2>
-                <div className="space-y-4 text-lg text-muted-foreground">
+                <h2 className="font-serif text-3xl text-[#1C1612] mb-6">Historia jonë</h2>
+                <div className="space-y-4 text-lg text-[#6B5B4E] leading-relaxed">
                   <p>
-                    Mobiljet Luksi filloi me një vizion të thjeshtë: të sillte dizajnin e mobiljes me klasë botërore për klientë diskretë që vlerësojnë cilësinë, artëzonësinë dhe elegantsën e përjetshme.
+                    Almer filloi me një vizion të thjeshtë: të transformojë drurin shqiptar dhe
+                    europian në mobilje që familjet i mbajnë gjenerata.
                   </p>
                   <p>
-                    Themeluar në 2014, fillojmë si një showroom i vogël me një koleksion të kuruar me kujdes. Sot, jemi rritur në një firmë të plotë të dizajnit të brendshëm që shërben klientat në të gjithë rajonin.
+                    Themeluar në 1998 në Tiranë, filluam si një atelier zejtari. Sot, shërbejmë
+                    klientë në të gjithë Shqipërinë me kuzhina, dhoma gjumi dhe arredim të plotë me
+                    porosi.
                   </p>
                   <p>
-                    Çdo pjesë në koleksionin tonë tregon një histori të artëzonësisë superior, burim të qëndrueshëm dhe vëmendje të kujdesshme ndaj detajit. Besojmë se mobilja e shkëlqyer nuk është vetëm për estetikën - bëhet për të krijuar hapësira ku ndodh jeta.
+                    Çdo copë tregon artëzonëri, burim të përgjegjshëm dhe vëmendje ndaj detajit —
+                    sepse mobilja e shkëlqyer krijon hapësira ku ndodh jeta.
                   </p>
                 </div>
               </div>
-              <div className="aspect-square rounded-lg overflow-hidden bg-muted border-4 border-accent/20 flex items-center justify-center">
-                <p className="text-muted-foreground">Image placeholder</p>
-              </div>
+              <div className="aspect-square rounded-2xl bg-[#EDE8DF] border border-[#EDE8DF]" />
             </div>
           </div>
         </section>
 
-        {/* Values Section */}
-        <section className="py-20 bg-card">
+        <section className="py-20 bg-[#FAF7F2]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-4xl font-serif font-bold text-foreground text-center mb-16">
-              Vlerat Tona
-            </h2>
+            <h2 className="font-serif text-3xl text-[#1C1612] text-center mb-16">Vlerat tona</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {[
                 {
                   icon: Award,
                   title: 'Cilësia',
-                  description: 'Ne kurrë nuk bini kompromis në cilësinë e materialeve, dizajnit ose artëzonësisë.',
+                  description: 'Asnjë kompromis në materiale, dizajn apo mbarim.',
                 },
                 {
                   icon: Heart,
                   title: 'Pasioni',
-                  description: 'Ne dojmë atë që bëjmë dhe shihet në çdo projekt që ndërmarrim.',
+                  description: 'Çdo projekt trajtohet me kujdes artizanal.',
                 },
                 {
                   icon: Globe,
                   title: 'Qëndrueshmëria',
-                  description: 'Angazhuar ndaj praktikave miqësore me mjedisin dhe burim të përgjegjshëm.',
+                  description: 'Druri i burimuar me përgjegjësi dhe qëndrueshmëri.',
                 },
                 {
                   icon: Users,
                   title: 'Shërbimi',
-                  description: 'Kënaqësia juaj është matja përfundimtare e suksesit ynë.',
+                  description: 'Kënaqësia juaj është standardi ynë.',
                 },
               ].map((value, idx) => {
                 const Icon = value.icon
                 return (
                   <div key={idx} className="text-center">
                     <div className="flex justify-center mb-4">
-                      <div className="p-4 rounded-full bg-primary/10">
-                        <Icon className="text-primary" size={32} />
+                      <div className="p-4 rounded-full bg-[#B8864E]/10">
+                        <Icon className="text-[#B8864E]" size={32} />
                       </div>
                     </div>
-                    <h3 className="text-xl font-semibold text-foreground mb-2">
-                      {value.title}
-                    </h3>
-                    <p className="text-muted-foreground">
-                      {value.description}
-                    </p>
+                    <h3 className="text-xl font-semibold text-[#1C1612] mb-2">{value.title}</h3>
+                    <p className="text-[#6B5B4E]">{value.description}</p>
                   </div>
                 )
               })}
@@ -104,58 +98,70 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Team Section */}
-        <section className="py-20">
+        <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-serif font-bold text-foreground mb-4">
-                Meet Our Team
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Talented professionals dedicated to creating your dream spaces.
+              <h2 className="font-serif text-3xl text-[#1C1612] mb-4">Ekipi ynë</h2>
+              <p className="text-lg text-[#6B5B4E] max-w-2xl mx-auto">
+                Zejtarë dhe dizajnerë të dedikuar për projektin tuaj.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {dummyTeam.map((member) => (
-                <div key={member._id} className="bg-card rounded-lg border border-border overflow-hidden hover:border-accent transition-all duration-300">
-                  <div className="aspect-square bg-muted flex items-center justify-center mb-4">
-                    <p className="text-muted-foreground">Image</p>
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-lg font-serif font-semibold text-foreground mb-1">
-                      {member.name}
-                    </h3>
-                    <p className="text-sm text-accent font-medium mb-3">
-                      {member.position}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      {member.bio}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
+            {team.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {team.map((member) => {
+                  const imageUrl = member.image
+                    ? urlFor(member.image).width(400).height(400).url()
+                    : null
+                  return (
+                    <div
+                      key={member._id}
+                      className="rounded-xl border border-[#EDE8DF] overflow-hidden hover:border-[#B8864E] transition-colors bg-white"
+                    >
+                      <div className="relative aspect-square bg-[#EDE8DF]">
+                        {imageUrl ? (
+                          <Image
+                            src={imageUrl}
+                            alt={member.name}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 1024px) 50vw, 25vw"
+                          />
+                        ) : null}
+                      </div>
+                      <div className="p-6">
+                        <h3 className="font-serif text-lg text-[#1C1612] mb-1">{member.name}</h3>
+                        <p className="text-sm text-[#B8864E] font-medium mb-3">{member.position}</p>
+                        {member.bio ? (
+                          <p className="text-sm text-[#6B5B4E]">{member.bio}</p>
+                        ) : null}
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            ) : (
+              <p className="text-center text-[#6B5B4E]">
+                Shtoni anëtarët e ekipit në Sanity Studio.
+              </p>
+            )}
           </div>
         </section>
 
-        {/* Stats Section */}
-        <section className="py-20 bg-gradient-to-r from-primary to-accent">
+        <section className="py-20 bg-[#1C1612]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
               {[
-                { label: 'Years in Business', value: '10+' },
-                { label: 'Projects Completed', value: '500+' },
-                { label: 'Happy Clients', value: '1000+' },
-                { label: 'Design Awards', value: '15+' },
-              ].map((stat, idx) => (
-                <div key={idx}>
-                  <p className="text-4xl md:text-5xl font-bold text-primary-foreground mb-2">
+                { label: 'Vite përvojë', value: '25+' },
+                { label: 'Projekte', value: '1,500+' },
+                { label: 'Klientë', value: '1,000+' },
+                { label: 'Me porosi', value: '100%' },
+              ].map((stat) => (
+                <div key={stat.label}>
+                  <p className="text-4xl md:text-5xl font-serif font-bold text-[#FAF7F2] mb-2">
                     {stat.value}
                   </p>
-                  <p className="text-primary-foreground/80">
-                    {stat.label}
-                  </p>
+                  <p className="text-[#FAF7F2]/60 text-sm">{stat.label}</p>
                 </div>
               ))}
             </div>

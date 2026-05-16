@@ -30,9 +30,15 @@ export default {
     },
     {
       name: 'icon',
-      title: 'Icon Name',
+      title: 'Icon',
       type: 'string',
-      description: 'Lucide React icon name (e.g., Sofa, Palette, Hammer)',
+      description: 'Emoji or short label (e.g. 🍳)',
+    },
+    {
+      name: 'features',
+      title: 'Feature bullets',
+      type: 'array',
+      of: [{ type: 'string' }],
     },
     {
       name: 'image',

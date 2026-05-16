@@ -2,30 +2,14 @@
 
 import Link from 'next/link'
 import { ServiceCard } from './service-card'
-import { mockServices } from '@/lib/mock-data'
-
-interface Service {
-  _id: string
-  title?: string
-  name?: string
-  description: string
-  icon?: string
-  features?: string[]
-}
+import type { SanityService } from '@/lib/sanity.types'
 
 interface ServicesSectionProps {
-  services: Service[]
+  services: SanityService[]
 }
 
 export function ServicesSection({ services }: ServicesSectionProps) {
-  const display =
-    services.length >= 3
-      ? services.slice(0, 3).map((s, i) => ({
-          ...mockServices[i],
-          ...s,
-          title: s.title ?? s.name ?? mockServices[i]?.title ?? 'Shërbim',
-        }))
-      : mockServices
+  const display = services.slice(0, 3)
 
   return (
     <section className="py-16 sm:py-20 bg-[#FAF7F2]">
@@ -44,8 +28,8 @@ export function ServicesSection({ services }: ServicesSectionProps) {
           {display.map((service) => (
             <ServiceCard
               key={service._id}
-              title={service.title ?? ''}
-              description={service.description}
+              title={service.title}
+              description={service.description ?? ''}
               icon={service.icon}
               features={service.features}
             />

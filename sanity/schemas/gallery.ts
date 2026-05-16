@@ -42,13 +42,24 @@ export default {
       },
     },
     {
+      name: 'location',
+      title: 'Location',
+      type: 'string',
+      description: 'e.g. Tiranë, Bllok',
+    },
+    {
       name: 'description',
       title: 'Description',
       type: 'text',
     },
     {
       name: 'featured',
-      title: 'Featured',
+      title: 'Featured on gallery page',
+      type: 'boolean',
+    },
+    {
+      name: 'featuredOnHome',
+      title: 'Featured on home (tall tile)',
       type: 'boolean',
     },
   ],

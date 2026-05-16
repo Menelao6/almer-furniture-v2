@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { urlFor } from '@/lib/sanity.image'
-import { CATEGORY_LABELS } from '@/lib/mock-data'
+import type { ProductCategory } from '@/lib/sanity.types'
 
 interface ProductCardProps {
   id: string
@@ -11,7 +11,7 @@ interface ProductCardProps {
   slug: string
   description: string
   image: unknown
-  category: string
+  category?: ProductCategory | null
 }
 
 export function ProductCard({
@@ -42,7 +42,7 @@ export function ProductCard({
     }
   }
 
-  const categoryLabel = CATEGORY_LABELS[category] ?? category
+  const categoryLabel = category?.title ?? ''
 
   return (
     <Link href={`/products/${slug}`} className="group block h-full">
@@ -59,9 +59,11 @@ export function ProductCard({
           ) : null}
         </div>
         <div className="p-5 flex flex-col flex-1">
-          <p className="text-xs uppercase tracking-wider text-[#B8864E] font-medium mb-2">
-            {categoryLabel}
-          </p>
+          {categoryLabel ? (
+            <p className="text-xs uppercase tracking-wider text-[#B8864E] font-medium mb-2">
+              {categoryLabel}
+            </p>
+          ) : null}
           <h3 className="font-serif text-lg text-[#1C1612] mb-2 line-clamp-2">{name}</h3>
           <p className="text-sm text-[#6B5B4E] line-clamp-2 flex-1 mb-4">{description}</p>
           <span className="text-sm text-[#B8864E] font-medium group-hover:underline mt-auto">
