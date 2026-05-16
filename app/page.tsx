@@ -10,6 +10,7 @@ import { ServicesSection } from '@/components/services-section'
 import { GalleryTeaser } from '@/components/gallery-teaser'
 import { Testimonials } from '@/components/testimonials'
 import { CTASection } from '@/components/cta-section'
+import { NewsSection } from '@/components/news-section'
 import { sanityFetchList } from '@/lib/sanity.client'
 import {
   featuredProductsQuery,
@@ -48,15 +49,15 @@ async function getHomePageData() {
       sanityFetchList<SanityGalleryItem>({ query: homeGalleryQuery }),
     ])
 
-  return { products, categories, services, testimonials, news, offers, gallery }
+  return { products, categories, services, testimonials, news, offers, gallery, posts: news }
 }
 
 export default async function Home() {
-  const { products, categories, services, testimonials, news, offers, gallery } =
+  const { products, categories, services, testimonials, news, offers, gallery, posts } =
     await getHomePageData()
 
   const showMixedStrip =
-    products.length > 0 || offers.length > 0 || news.length > 0
+    products.length > 0 || offers.length > 0 || news.length > 0 || posts.length > 0
 
   return (
     <>
@@ -71,6 +72,7 @@ export default async function Home() {
           <FeaturedProducts products={products} categories={categories} />
         )}
         <AboutStrip />
+        {posts.length > 0 && <NewsSection articles={posts} />}
         {services.length > 0 && <ServicesSection services={services} />}
         {gallery.length > 0 && <GalleryTeaser items={gallery} />}
         {testimonials.length > 0 && (
