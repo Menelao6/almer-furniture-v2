@@ -46,7 +46,10 @@ export const activeOffersQuery = `*[_type == "offer" && active == true && featur
   title,
   discount,
   "expiry": expiryDate,
-  "href": coalesce(link, select(defined(slug.current) => "/products/" + slug.current, "/products"))
+  "href": coalesce(link, select(defined(slug.current) => "/products/" + slug.current, "/products")),
+  image {
+    asset->{ url }
+  }
 }`
 
 export const latestNewsQuery = `*[_type == "news"] | order(publishedAt desc) [0...6] {
@@ -56,7 +59,9 @@ export const latestNewsQuery = `*[_type == "news"] | order(publishedAt desc) [0.
   excerpt,
   publishedAt,
   "tag": coalesce(tag, "Lajm"),
-  image
+  image {
+    asset->{ url }
+  }
 }`
 
 export const homeGalleryQuery = `*[_type == "gallery" && featured == true] | order(featuredOnHome desc, _createdAt desc) [0...4] {
@@ -87,7 +92,9 @@ export const featuredServicesQuery = `*[_type == "service"] | order(featured des
   description,
   icon,
   features,
-  image,
+  image {
+    asset->{ url }
+  },
   featured
 }`
 
@@ -98,7 +105,9 @@ export const allServicesQuery = `*[_type == "service"] | order(title asc) {
   description,
   icon,
   features,
-  image,
+  image {
+    asset->{ url }
+  },
   featured
 }`
 

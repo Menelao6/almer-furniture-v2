@@ -10,42 +10,38 @@ const steps = ['01 Konsultë', '02 Dizajn 3D', '03 Montim']
 
 export function CTASection() {
   return (
-    <section className="py-16 sm:py-24 bg-[#1C1612]">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-[#B8864E] font-semibold mb-4">
-          Filloni sot
-        </p>
-        <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#FAF7F2] leading-tight mb-4">
-          Gati të transformoni
-          <br />
-          hapësirën tuaj?
+    <section className="section-padding bg-wood-dark">
+      <div className="container-page max-w-3xl text-center">
+        <p className="text-eyebrow text-primary font-semibold mb-4">Filloni sot</p>
+        <h2 className="font-serif text-h2 text-warm-white leading-tight mb-4">
+          Gati të transformoni hapësirën tuaj?
         </h2>
-        <p className="text-[#FAF7F2]/60 text-sm sm:text-base mb-8">
+        <p className="text-body text-warm-white/60 mb-8">
           Konsultë falas · Planifikim 3D · Ofertë pa detyrim
         </p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-12">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-[var(--space-block)]">
           <a
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3.5 text-sm font-medium text-white bg-[#25D366] hover:bg-[#20bd5a] rounded-full transition-colors"
+            className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-[var(--btn-px)] py-[var(--btn-py)] text-small font-medium text-white bg-[#25D366] hover:bg-[#20bd5a] rounded-full transition-colors"
           >
-            <MessageCircle size={18} />
+            <MessageCircle size={18} aria-hidden />
             Chato në WhatsApp
           </a>
           <Link
             href="/contact"
-            className="inline-flex items-center justify-center w-full sm:w-auto px-6 py-3.5 text-sm font-medium text-[#B8864E] border border-[#B8864E] hover:bg-[#B8864E]/10 rounded-full transition-colors"
+            className="inline-flex items-center justify-center w-full sm:w-auto px-[var(--btn-px)] py-[var(--btn-py)] text-small font-medium text-primary border border-primary hover:bg-primary/10 rounded-full transition-colors"
           >
             Kërko ofertë
           </Link>
         </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs sm:text-sm text-[#FAF7F2]/50">
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-small text-warm-white/50">
           {steps.map((step, i) => (
             <span key={step} className="flex items-center gap-3 sm:gap-6">
-              {i > 0 && <span className="text-[#FAF7F2]/25 hidden sm:inline">──</span>}
+              {i > 0 && <span className="text-warm-white/25 hidden sm:inline" aria-hidden>──</span>}
               <span>{step}</span>
             </span>
           ))}

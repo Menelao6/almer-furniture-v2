@@ -1,14 +1,19 @@
 import { Metadata } from 'next'
+import { Navigation } from '@/components/nav'
+import { Footer } from '@/components/footer'
 import { Hero } from '@/components/hero'
 import { TrustStrip } from '@/components/trust-strip'
 import { MixedStrip } from '@/components/mixed-strip'
+import type { OfferStripItem, NewsStripItem } from '@/components/mixed-strip'
 import { FeaturedProducts } from '@/components/featured-products'
 import { AboutStrip } from '@/components/about-strip'
+import { ProcessStrip } from '@/components/process-strip'
 import { ServicesSection } from '@/components/services-section'
 import { GalleryTeaser } from '@/components/gallery-teaser'
 import { Testimonials } from '@/components/testimonials'
 import { CTASection } from '@/components/cta-section'
 import { sanityFetchList } from '@/lib/sanity.client'
+import { formatDateAlbanian } from '@/lib/format-date'
 import {
   featuredProductsQuery,
   productCategoriesQuery,
@@ -45,44 +50,68 @@ async function getHomePageData() {
       sanityFetchList<SanityOffer>({ query: activeOffersQuery }),
       sanityFetchList<SanityGalleryItem>({ query: homeGalleryQuery }),
     ])
-  return { products, categories, services, testimonials, news, offers, gallery }
+
+  const offersWithLabels: OfferStripItem[] = offers.map((offer) => ({
+    ...offer,
+    expiryLabel: offer.expiry ? formatDateAlbanian(offer.expiry, 'long') : undefined,
+  }))
+
+  const newsWithLabels: NewsStripItem[] = news.map((item) => ({
+    ...item,
+    publishedAtLabel: item.publishedAt
+      ? formatDateAlbanian(item.publishedAt, 'short')
+      : undefined,
+  }))
+
+  return {
+    products,
+    categories,
+    services,
+    testimonials,
+    news: newsWithLabels,
+    offers: offersWithLabels,
+    gallery,
+  }
 }
 
 export default async function Home() {
   const { products, categories, services, testimonials, news, offers, gallery } =
     await getHomePageData()
 
+  const showMixedStrip =
+    products.length > 0 || offers.length > 0 || news.length > 0
+
   return (
     <>
+      <Navigation />
+      <main>
+        <Hero />
 
-      <Hero />
+        <TrustStrip />
 
-      <TrustStrip />
+        {showMixedStrip && (
+          <MixedStrip products={products} offers={offers} news={news} />
+        )}
 
-      {/* Mixed horizontal strip — only rendered when there is content */}
-      {(products.length > 0 || offers.length > 0 || news.length > 0) && (
-        <MixedStrip products={products} offers={offers} news={news} />
-      )}
+        {products.length > 0 && (
+          <FeaturedProducts products={products} categories={categories} />
+        )}
 
-      {/* Featured products grid with category filter pills */}
-      {products.length > 0 && (
-        <FeaturedProducts products={products} categories={categories} />
-      )}
+        <AboutStrip />
 
-      {/* About — always shown (static content) */}
-      <AboutStrip />
+        <ProcessStrip />
 
-      {/* Services — always shown; cards show image when added in Sanity */}
-      {services.length > 0 && <ServicesSection services={services} />}
+        {services.length > 0 && <ServicesSection services={services} />}
 
-      {/* Gallery teaser — only when photos are published */}
-      {gallery.length > 0 && <GalleryTeaser items={gallery} />}
+        {gallery.length > 0 && <GalleryTeaser items={gallery} />}
 
-      {/* Testimonials — only when entries are published */}
-      {testimonials.length > 0 && <Testimonials testimonials={testimonials} />}
+        {testimonials.length > 0 && (
+          <Testimonials testimonials={testimonials} />
+        )}
 
-      {/* CTA — always last, always shown */}
-      <CTASection />
+        <CTASection />
+      </main>
+      <Footer />
     </>
   )
 }

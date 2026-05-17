@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { ProductCard } from './product-card'
+import { SectionHeader } from '@/components/section-header'
 import type { SanityProduct, ProductCategory } from '@/lib/sanity.types'
 
 interface FeaturedProductsProps {
@@ -20,49 +21,33 @@ export function FeaturedProducts({ products, categories }: FeaturedProductsProps
   const display = filtered.slice(0, 4)
 
   return (
-    <section className="py-16 sm:py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
-          <h2 className="font-serif text-3xl sm:text-4xl text-[#1C1612]">Koleksioni ynë</h2>
-          <Link
-            href="/products"
-            className="text-sm text-[#6B5B4E] hover:text-[#B8864E] transition-colors shrink-0"
-          >
-            Shiko të gjitha produktet →
-          </Link>
-        </div>
+    <section className="section-padding bg-card">
+      <div className="container-page">
+        <SectionHeader
+          title="Koleksioni ynë"
+          description="Mobilje me porosi — zgjidhni kategorinë dhe shikoni modelet tona."
+          link={{ href: '/products', label: 'Shiko të gjitha produktet →' }}
+        />
 
         {categories.length > 0 && (
-          <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2 mb-10 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap">
-            <button
-              type="button"
+          <div className="flex flex-wrap gap-2 pb-2 mb-[var(--space-block)] sm:flex-nowrap sm:overflow-x-auto sm:scrollbar-hide sm:scroll-touch-x sm:-mx-[var(--container-px)] sm:px-[var(--container-px)] lg:mx-0 lg:px-0">
+            <CategoryPill
+              active={activeCategory === null}
               onClick={() => setActiveCategory(null)}
-              className={`shrink-0 px-4 py-2 text-sm rounded-full border transition-colors ${
-                activeCategory === null
-                  ? 'bg-[#B8864E] text-white border-[#B8864E]'
-                  : 'bg-white text-[#6B5B4E] border-[#EDE8DF] hover:bg-[#B8864E] hover:text-white hover:border-[#B8864E]'
-              }`}
-            >
-              Të gjitha
-            </button>
+              label="Të gjitha"
+            />
             {categories.map((cat) => (
-              <button
+              <CategoryPill
                 key={cat._id}
-                type="button"
+                active={activeCategory === cat.slug}
                 onClick={() => setActiveCategory(cat.slug)}
-                className={`shrink-0 px-4 py-2 text-sm rounded-full border transition-colors ${
-                  activeCategory === cat.slug
-                    ? 'bg-[#B8864E] text-white border-[#B8864E]'
-                    : 'bg-white text-[#6B5B4E] border-[#EDE8DF] hover:bg-[#B8864E] hover:text-white hover:border-[#B8864E]'
-                }`}
-              >
-                {cat.title}
-              </button>
+                label={cat.title}
+              />
             ))}
           </div>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[var(--space-gap)] mb-[var(--space-block)]">
           {display.map((product) => (
             <ProductCard
               key={product._id}
@@ -79,12 +64,36 @@ export function FeaturedProducts({ products, categories }: FeaturedProductsProps
         <div className="text-center">
           <Link
             href="/products"
-            className="inline-flex items-center px-8 py-3.5 text-sm font-medium text-[#B8864E] border border-[#B8864E] rounded-full hover:bg-[#B8864E] hover:text-white transition-colors"
+            className="inline-flex items-center px-[var(--btn-px)] py-[var(--btn-py)] text-small font-medium text-primary border border-primary rounded-full hover:bg-primary hover:text-primary-foreground transition-colors"
           >
             Shiko të gjitha produktet →
           </Link>
         </div>
       </div>
     </section>
+  )
+}
+
+function CategoryPill({
+  active,
+  onClick,
+  label,
+}: {
+  active: boolean
+  onClick: () => void
+  label: string
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`shrink-0 min-h-11 px-4 py-2.5 text-small rounded-full border transition-colors touch-manipulation select-none active:scale-[0.98] ${
+        active
+          ? 'bg-primary text-primary-foreground border-primary'
+          : 'bg-card text-muted-foreground border-border hover:bg-primary hover:text-primary-foreground hover:border-primary'
+      }`}
+    >
+      {label}
+    </button>
   )
 }
