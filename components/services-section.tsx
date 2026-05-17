@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { ServiceCard } from './service-card'
+import { urlFor } from '@/lib/sanity.image'
 import type { SanityService } from '@/lib/sanity.types'
 
 interface ServicesSectionProps {
@@ -32,6 +33,12 @@ export function ServicesSection({ services }: ServicesSectionProps) {
               description={service.description ?? ''}
               icon={service.icon}
               features={service.features}
+              // Resolve Sanity image to a URL — gracefully undefined if no image set
+              imageUrl={
+                service.image
+                  ? urlFor(service.image).width(600).height(352).url()
+                  : undefined
+              }
             />
           ))}
         </div>

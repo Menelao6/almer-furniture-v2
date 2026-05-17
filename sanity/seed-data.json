@@ -142,11 +142,3 @@
     }
   ]
 }
- {
-    "id": 1,
-    "name": "Arben Hoxha",
-    "position": "Mjeshtër Zdrukthëtar",
-    "bio": "Me mbi 15 vite eksperiencë në punimin e tavolinave dhe mobilieve prej druri masiv.",
-    "image": "https://example.com/images/arben-hoxha.jpg",
-    "email": "arben.hoxha@example.com"
-  },

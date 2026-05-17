@@ -38,6 +38,7 @@ export type SanityOffer = {
   _id: string
   title: string
   discount: string
+  image?: SanityImage
   expiry: string
   href: string
 }

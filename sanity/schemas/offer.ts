@@ -29,6 +29,14 @@ export default {
       description: 'Optional. e.g. /products?category=kuzhina',
     },
     {
+      name: 'image',
+      title: 'Featured Image',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+    },
+    {
       name: 'expiryDate',
       title: 'Expiry date',
       type: 'date',
@@ -50,6 +58,7 @@ export default {
     select: {
       title: 'title',
       subtitle: 'discount',
+      media: 'image',
     },
   },
 }

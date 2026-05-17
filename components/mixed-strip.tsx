@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRef } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { urlFor } from '@/lib/sanity.image'
 import type { SanityProduct, SanityOffer, SanityNews } from '@/lib/sanity.types'
 
 interface MixedStripProps {
@@ -12,7 +13,7 @@ interface MixedStripProps {
   news: SanityNews[]
 }
 
-function getImageUrl(product: SanityProduct) {
+function getProductImageUrl(product: SanityProduct) {
   return product.images?.[0]?.image?.asset?.url ?? ''
 }
 
@@ -31,10 +32,7 @@ export function MixedStrip({ products, offers, news }: MixedStripProps) {
   const scroll = (dir: 'left' | 'right') => {
     if (!scrollRef.current) return
     const amount = scrollRef.current.clientWidth * 0.75
-    scrollRef.current.scrollBy({
-      left: dir === 'left' ? -amount : amount,
-      behavior: 'smooth',
-    })
+    scrollRef.current.scrollBy({ left: dir === 'left' ? -amount : amount, behavior: 'smooth' })
   }
 
   const p0 = products[0]
@@ -78,7 +76,7 @@ export function MixedStrip({ products, offers, news }: MixedStripProps) {
             <ProductStripCard
               name={p0.name}
               category={p0.category?.title ?? ''}
-              image={getImageUrl(p0)}
+              image={getProductImageUrl(p0)}
               href={`/products/${p0.slug.current}`}
               width="w-[260px] sm:w-[280px]"
             />
@@ -88,7 +86,7 @@ export function MixedStrip({ products, offers, news }: MixedStripProps) {
             <ProductStripCard
               name={p1.name}
               category={p1.category?.title ?? ''}
-              image={getImageUrl(p1)}
+              image={getProductImageUrl(p1)}
               href={`/products/${p1.slug.current}`}
               width="w-[240px] sm:w-[260px]"
             />
@@ -98,7 +96,7 @@ export function MixedStrip({ products, offers, news }: MixedStripProps) {
             <ProductStripCard
               name={p2.name}
               category={p2.category?.title ?? ''}
-              image={getImageUrl(p2)}
+              image={getProductImageUrl(p2)}
               href={`/products/${p2.slug.current}`}
               width="w-[260px] sm:w-[280px]"
             />
@@ -120,17 +118,9 @@ export function MixedStrip({ products, offers, news }: MixedStripProps) {
 }
 
 function ProductStripCard({
-  name,
-  category,
-  image,
-  href,
-  width,
+  name, category, image, href, width,
 }: {
-  name: string
-  category: string
-  image: string
-  href: string
-  width: string
+  name: string; category: string; image: string; href: string; width: string
 }) {
   return (
     <Link
@@ -138,16 +128,14 @@ function ProductStripCard({
       className={`${width} shrink-0 snap-start h-[320px] flex flex-col bg-white rounded-xl border border-[#EDE8DF] overflow-hidden hover:border-[#B8864E] hover:shadow-md transition-all group`}
     >
       <div className="relative flex-1 min-h-[180px] bg-[#EDE8DF]">
-        {image ? (
-          <Image src={image} alt={name} fill className="object-cover" sizes="280px" />
-        ) : null}
+        {image && (
+          <Image src={image} alt={name} fill className="object-cover group-hover:scale-[1.03] transition-transform duration-500" sizes="280px" />
+        )}
       </div>
       <div className="p-4">
-        {category ? (
-          <p className="text-xs uppercase tracking-wider text-[#B8864E] font-medium mb-1">
-            {category}
-          </p>
-        ) : null}
+        {category && (
+          <p className="text-xs uppercase tracking-wider text-[#B8864E] font-medium mb-1">{category}</p>
+        )}
         <h3 className="font-serif text-lg text-[#1C1612] line-clamp-2 mb-2">{name}</h3>
         <span className="text-sm text-[#B8864E] group-hover:underline">Shiko →</span>
       </div>
@@ -156,21 +144,44 @@ function ProductStripCard({
 }
 
 function OfferStripCard({ offer }: { offer: SanityOffer }) {
+  // Resolve image via urlFor if available
+  const imageUrl = offer.image ? urlFor(offer.image).width(480).height(640).url() : null
+
   return (
     <Link
-      href={offer.href}
-      className="w-[220px] sm:w-[240px] shrink-0 snap-start h-[320px] flex flex-col justify-between bg-[#B8864E] rounded-xl p-6 text-white hover:bg-[#a67845] transition-colors group"
+      href={offer.href ?? '/products'}
+      className="w-[220px] sm:w-[240px] shrink-0 snap-start h-[320px] relative flex flex-col justify-between rounded-xl overflow-hidden group"
     >
-      <div>
-        <p className="text-4xl font-serif font-bold mb-2">{offer.discount}</p>
-        <p className="text-sm text-white/80 mb-1">Ofertë</p>
-        <h3 className="font-serif text-xl leading-snug">{offer.title}</h3>
-      </div>
-      <div>
-        {offer.expiry ? (
-          <p className="text-xs text-white/70 mb-4">Deri më {formatExpiry(offer.expiry)}</p>
-        ) : null}
-        <span className="text-sm font-medium group-hover:underline">Shiko ofertën →</span>
+      {/* Background: image if available, otherwise solid accent */}
+      {imageUrl ? (
+        <>
+          <Image
+            src={imageUrl}
+            alt={offer.title ?? 'Ofertë'}
+            fill
+            className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
+            sizes="240px"
+          />
+          {/* gradient overlay so text is always readable */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-black/10" />
+        </>
+      ) : (
+        <div className="absolute inset-0 bg-[#B8864E]" />
+      )}
+
+      {/* Content sits on top of image/colour */}
+      <div className="relative z-10 p-6 flex flex-col justify-between h-full text-white">
+        <div>
+          <p className="text-4xl font-serif font-bold mb-1">{offer.discount}</p>
+          <p className="text-xs uppercase tracking-wider text-white/70 mb-2">Ofertë</p>
+          <h3 className="font-serif text-xl leading-snug line-clamp-2">{offer.title}</h3>
+        </div>
+        <div>
+          {offer.expiry && (
+            <p className="text-xs text-white/60 mb-3">Deri më {formatExpiry(offer.expiry)}</p>
+          )}
+          <span className="text-sm font-medium group-hover:underline">Shiko ofertën →</span>
+        </div>
       </div>
     </Link>
   )
@@ -178,25 +189,45 @@ function OfferStripCard({ offer }: { offer: SanityOffer }) {
 
 function NewsStripCard({ item }: { item: SanityNews }) {
   const date = new Date(item.publishedAt).toLocaleDateString('sq-AL', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
+    day: 'numeric', month: 'short', year: 'numeric',
   })
+
+  // Resolve Sanity image via urlFor if available
+  const imageUrl = item.image ? urlFor(item.image).width(520).height(640).url() : null
 
   return (
     <Link
       href={`/news/${item.slug.current}`}
-      className="w-[240px] sm:w-[260px] shrink-0 snap-start h-[320px] flex flex-col justify-between bg-[#1C1612] rounded-xl p-6 text-white hover:bg-[#2a221c] transition-colors group"
+      className="w-[240px] sm:w-[260px] shrink-0 snap-start h-[320px] relative flex flex-col justify-between rounded-xl overflow-hidden group"
     >
-      <div>
-        <span className="inline-block text-[10px] uppercase tracking-wider px-2 py-1 rounded bg-[#B8864E]/30 text-[#FAF7F2] mb-4">
-          {item.tag ?? 'Lajm'}
-        </span>
-        <h3 className="font-serif text-xl leading-snug line-clamp-3">{item.title}</h3>
-      </div>
-      <div>
-        <p className="text-xs text-white/50 mb-3">{date}</p>
-        <span className="text-sm text-[#B8864E] group-hover:underline">Lexo më shumë →</span>
+      {/* Background: image if available, otherwise dark wood */}
+      {imageUrl ? (
+        <>
+          <Image
+            src={imageUrl}
+            alt={item.title}
+            fill
+            className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
+            sizes="260px"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/5" />
+        </>
+      ) : (
+        <div className="absolute inset-0 bg-[#1C1612]" />
+      )}
+
+      {/* Content */}
+      <div className="relative z-10 p-6 flex flex-col justify-between h-full text-white">
+        <div>
+          <span className="inline-block text-[10px] uppercase tracking-wider px-2 py-1 rounded bg-[#B8864E]/80 text-white mb-4">
+            {item.tag ?? 'Lajm'}
+          </span>
+          <h3 className="font-serif text-xl leading-snug line-clamp-3">{item.title}</h3>
+        </div>
+        <div>
+          <p className="text-xs text-white/50 mb-3">{date}</p>
+          <span className="text-sm text-[#d4a96a] group-hover:underline">Lexo më shumë →</span>
+        </div>
       </div>
     </Link>
   )
