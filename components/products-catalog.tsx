@@ -45,7 +45,7 @@ export function ProductsCatalog({ products, categories }: ProductsCatalogProps) 
                   <button
                     type="button"
                     onClick={() => setSelectedCategory('all')}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                    className={`min-h-11 px-4 py-2.5 rounded-full text-sm font-medium transition-all touch-manipulation select-none active:scale-[0.98] ${
                       selectedCategory === 'all'
                         ? 'bg-[#B8864E] text-white'
                         : 'bg-white text-[#6B5B4E] border border-[#EDE8DF] hover:border-[#B8864E]'
@@ -58,7 +58,7 @@ export function ProductsCatalog({ products, categories }: ProductsCatalogProps) 
                       key={cat._id}
                       type="button"
                       onClick={() => setSelectedCategory(cat.slug)}
-                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                      className={`min-h-11 px-4 py-2.5 rounded-full text-sm font-medium transition-all touch-manipulation select-none active:scale-[0.98] ${
                         selectedCategory === cat.slug
                           ? 'bg-[#B8864E] text-white'
                           : 'bg-white text-[#6B5B4E] border border-[#EDE8DF] hover:border-[#B8864E]'

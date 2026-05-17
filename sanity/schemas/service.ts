@@ -29,6 +29,12 @@ export default {
       of: [{ type: 'block' }],
     },
     {
+      name: 'icon',
+      title: 'Icon',
+      type: 'string',
+      description: 'Emoji or short label (e.g. 🍳)',
+    },
+    {
       name: 'features',
       title: 'Feature bullets',
       type: 'array',

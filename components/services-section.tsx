@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { ServiceCard } from './service-card'
-import { urlFor } from '@/lib/sanity.image'
+import { SectionHeader } from '@/components/section-header'
 import type { SanityService } from '@/lib/sanity.types'
 
 interface ServicesSectionProps {
@@ -13,19 +13,15 @@ export function ServicesSection({ services }: ServicesSectionProps) {
   const display = services.slice(0, 3)
 
   return (
-    <section className="py-16 sm:py-20 bg-[#FAF7F2]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
-          <h2 className="font-serif text-3xl sm:text-4xl text-[#1C1612]">Shërbimet tona</h2>
-          <Link
-            href="/services"
-            className="text-sm text-[#6B5B4E] hover:text-[#B8864E] transition-colors"
-          >
-            Të gjitha shërbimet →
-          </Link>
-        </div>
+    <section className="section-padding bg-warm-white">
+      <div className="container-page">
+        <SectionHeader
+          title="Shërbimet tona"
+          description="Nga kuzhina me porosi deri te arredimi i plotë — një ekip, një standard."
+          link={{ href: '/services', label: 'Të gjitha shërbimet →' }}
+        />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-[var(--space-gap)] mb-[var(--space-block)]">
           {display.map((service) => (
             <ServiceCard
               key={service._id}
@@ -33,12 +29,7 @@ export function ServicesSection({ services }: ServicesSectionProps) {
               description={service.description ?? ''}
               icon={service.icon}
               features={service.features}
-              // Resolve Sanity image to a URL — gracefully undefined if no image set
-              imageUrl={
-                service.image
-                  ? urlFor(service.image).width(600).height(352).url()
-                  : undefined
-              }
+              image={service.image}
             />
           ))}
         </div>
@@ -46,7 +37,7 @@ export function ServicesSection({ services }: ServicesSectionProps) {
         <div className="text-center">
           <Link
             href="/services"
-            className="inline-flex items-center px-8 py-3.5 text-sm font-medium text-white bg-[#1C1612] hover:bg-[#2a221c] rounded-full transition-colors"
+            className="inline-flex items-center px-[var(--btn-px)] py-[var(--btn-py)] text-small font-medium text-primary-foreground bg-wood-dark hover:opacity-90 rounded-full transition-opacity"
           >
             Shfletoni të gjithë shërbimet →
           </Link>

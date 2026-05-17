@@ -64,6 +64,7 @@ export default async function ServicesPage() {
                     description={service.description ?? ''}
                     icon={service.icon}
                     features={service.features}
+                    image={service.image}
                   />
                 ))}
               </div>

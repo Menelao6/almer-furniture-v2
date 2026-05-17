@@ -8,12 +8,12 @@ export function TrustStrip() {
   ]
 
   return (
-    <section className="bg-[#B8864E] py-3">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p className="text-center text-[10px] sm:text-xs uppercase tracking-[0.18em] text-[#FAF7F2] font-medium leading-relaxed">
+    <section className="bg-primary py-[clamp(0.625rem,1.5vh,0.875rem)]">
+      <div className="container-page">
+        <p className="text-center text-eyebrow text-primary-foreground font-medium leading-relaxed normal-case">
           {items.map((item, i) => (
             <span key={item}>
-              {i > 0 && <span className="mx-2 sm:mx-3 opacity-70">✦</span>}
+              {i > 0 && <span className="mx-2 sm:mx-3 opacity-70" aria-hidden>✦</span>}
               {item}
             </span>
           ))}

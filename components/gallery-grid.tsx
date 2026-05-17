@@ -2,8 +2,8 @@
 
 import { useMemo, useState } from 'react'
 import Image from 'next/image'
-import { X } from 'lucide-react'
 import type { SanityGalleryItem } from '@/lib/sanity.types'
+import { ImageLightbox } from '@/components/image-lightbox'
 
 const ROOM_LABELS: Record<string, string> = {
   living: 'Dhoma ndenjeje',
@@ -65,21 +65,23 @@ export function GalleryGrid({ items }: GalleryGridProps) {
                 <button
                   key={item._id}
                   type="button"
-                  onClick={() => setLightbox(item)}
-                  className="group relative overflow-hidden rounded-xl aspect-square bg-[#EDE8DF] cursor-pointer text-left"
+                  onClick={() => item.image && setLightbox(item)}
+                  disabled={!item.image}
+                  className="group relative overflow-hidden rounded-xl aspect-square bg-[#EDE8DF] cursor-zoom-in text-left touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8864E] focus-visible:ring-offset-2 disabled:cursor-default"
+                  aria-label={`Zmadho: ${item.title}`}
                 >
                   {item.image ? (
                     <Image
                       src={item.image}
                       alt={item.title}
                       fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="object-cover transition-transform duration-500 group-active:scale-[1.02]"
                       sizes="(max-width: 768px) 100vw, 33vw"
                     />
                   ) : null}
-                  <div className="absolute inset-0 bg-[#1C1612]/0 group-hover:bg-[#1C1612]/60 transition-colors flex items-end">
-                    <div className="w-full p-6 translate-y-2 group-hover:translate-y-0 transition-transform">
-                      <h3 className="font-serif text-xl text-white mb-1">{item.title}</h3>
+                  <div className="absolute inset-0 bg-[#1C1612]/35 sm:bg-[#1C1612]/0 sm:group-hover:bg-[#1C1612]/60 transition-colors flex items-end pointer-events-none">
+                    <div className="w-full p-6 sm:translate-y-2 sm:group-hover:translate-y-0 transition-transform">
+                      <h3 className="font-serif text-xl text-white mb-1 drop-shadow-sm">{item.title}</h3>
                       {item.location ? (
                         <p className="text-white/80 text-sm">{item.location}</p>
                       ) : null}
@@ -98,40 +100,14 @@ export function GalleryGrid({ items }: GalleryGridProps) {
         </div>
       </section>
 
-      {lightbox && (
-        <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
-          <button
-            type="button"
-            onClick={() => setLightbox(null)}
-            className="absolute top-4 right-4 p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors"
-            aria-label="Mbyll"
-          >
-            <X size={24} />
-          </button>
-          <div className="max-w-4xl w-full">
-            {lightbox.image && (
-              <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4 bg-[#EDE8DF]">
-                <Image
-                  src={lightbox.image}
-                  alt={lightbox.title}
-                  fill
-                  className="object-contain"
-                  sizes="90vw"
-                />
-              </div>
-            )}
-            <div className="text-center">
-              <h3 className="font-serif text-2xl text-white mb-2">{lightbox.title}</h3>
-              {lightbox.location ? (
-                <p className="text-white/70 text-sm mb-2">{lightbox.location}</p>
-              ) : null}
-              {lightbox.description ? (
-                <p className="text-white/80">{lightbox.description}</p>
-              ) : null}
-            </div>
-          </div>
-        </div>
-      )}
+      <ImageLightbox
+        open={Boolean(lightbox?.image)}
+        onClose={() => setLightbox(null)}
+        src={lightbox?.image ?? ''}
+        alt={lightbox?.title ?? ''}
+        title={lightbox?.title}
+        description={lightbox?.location}
+      />
     </>
   )
 }
@@ -149,7 +125,7 @@ function FilterButton({
     <button
       type="button"
       onClick={onClick}
-      className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+      className={`min-h-11 px-4 py-2.5 rounded-full text-sm font-medium transition-all touch-manipulation select-none active:scale-[0.98] ${
         active
           ? 'bg-[#B8864E] text-white'
           : 'bg-white text-[#6B5B4E] border border-[#EDE8DF] hover:border-[#B8864E]'
