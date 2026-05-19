@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { ProductCard } from './product-card'
+import { TapButton } from '@/components/tap-button'
 import type { SanityProduct, ProductCategory } from '@/lib/sanity.types'
 
 interface ProductsCatalogProps {
@@ -34,49 +35,40 @@ export function ProductsCatalog({ products, categories }: ProductsCatalogProps) 
   }, [products, selectedCategory, sortBy])
 
   return (
-    <section className="py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <div className="flex flex-col md:flex-row gap-6 md:items-center md:justify-between">
+    <section className="section-padding-sm bg-background">
+      <div className="container-page">
+        <div className="mb-6">
+          <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             {categories.length > 0 && (
-              <div>
-                <p className="text-sm font-semibold text-[#1C1612] mb-3">Kategoria</p>
+              <div className="min-w-0 flex-1">
+                <p className="text-small font-semibold text-foreground mb-3">Kategoria</p>
                 <div className="flex flex-wrap gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setSelectedCategory('all')}
-                    className={`min-h-11 px-4 py-2.5 rounded-full text-sm font-medium transition-all touch-manipulation select-none active:scale-[0.98] ${
-                      selectedCategory === 'all'
-                        ? 'bg-[#B8864E] text-white'
-                        : 'bg-white text-[#6B5B4E] border border-[#EDE8DF] hover:border-[#B8864E]'
-                    }`}
-                  >
-                    Të gjitha
-                  </button>
+                  <CategoryPill
+                    active={selectedCategory === 'all'}
+                    label="Të gjitha"
+                    onSelect={() => setSelectedCategory('all')}
+                  />
                   {categories.map((cat) => (
-                    <button
+                    <CategoryPill
                       key={cat._id}
-                      type="button"
-                      onClick={() => setSelectedCategory(cat.slug)}
-                      className={`min-h-11 px-4 py-2.5 rounded-full text-sm font-medium transition-all touch-manipulation select-none active:scale-[0.98] ${
-                        selectedCategory === cat.slug
-                          ? 'bg-[#B8864E] text-white'
-                          : 'bg-white text-[#6B5B4E] border border-[#EDE8DF] hover:border-[#B8864E]'
-                      }`}
-                    >
-                      {cat.title}
-                    </button>
+                      active={selectedCategory === cat.slug}
+                      label={cat.title}
+                      onSelect={() => setSelectedCategory(cat.slug)}
+                    />
                   ))}
                 </div>
               </div>
             )}
 
-            <div>
-              <p className="text-sm font-semibold text-[#1C1612] mb-3">Renditni sipas</p>
+            <div className="shrink-0">
+              <label htmlFor="product-sort" className="text-small font-semibold text-foreground mb-3 block">
+                Renditni sipas
+              </label>
               <select
+                id="product-sort"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="px-4 py-2 rounded-lg border border-[#EDE8DF] bg-white text-[#1C1612] cursor-pointer hover:border-[#B8864E] transition-colors text-sm"
+                className="min-h-11 w-full min-w-[12rem] px-4 py-2.5 rounded-lg border border-border bg-card text-foreground text-small touch-manipulation"
               >
                 <option value="featured">Të zgjedhurat</option>
                 <option value="name-asc">Emri (A-Z)</option>
@@ -86,16 +78,13 @@ export function ProductsCatalog({ products, categories }: ProductsCatalogProps) 
           </div>
         </div>
 
-        <div className="mb-8">
-          <p className="text-sm text-[#6B5B4E]">
-            Duke treguar{' '}
-            <span className="font-semibold text-[#1C1612]">{filteredProducts.length}</span>{' '}
-            produkte
-          </p>
-        </div>
+        <p className="text-small text-muted-foreground mb-6">
+          Duke treguar{' '}
+          <span className="font-semibold text-foreground">{filteredProducts.length}</span> produkte
+        </p>
 
         {filteredProducts.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[var(--space-gap)]">
             {filteredProducts.map((product) => (
               <ProductCard
                 key={product._id}
@@ -109,8 +98,8 @@ export function ProductsCatalog({ products, categories }: ProductsCatalogProps) 
             ))}
           </div>
         ) : (
-          <div className="text-center py-16">
-            <p className="text-lg text-[#6B5B4E]">
+          <div className="text-center py-12">
+            <p className="text-body text-muted-foreground">
               {products.length === 0
                 ? 'Nuk ka produkte të publikuara ende. Shtoni produkte në Sanity Studio.'
                 : 'Nuk u gjet asnjë produkt në këtë kategori.'}
@@ -119,5 +108,28 @@ export function ProductsCatalog({ products, categories }: ProductsCatalogProps) 
         )}
       </div>
     </section>
+  )
+}
+
+function CategoryPill({
+  active,
+  label,
+  onSelect,
+}: {
+  active: boolean
+  label: string
+  onSelect: () => void
+}) {
+  return (
+    <TapButton
+      onTap={onSelect}
+      className={`shrink-0 min-h-11 px-4 py-2.5 rounded-full text-small font-medium border transition-colors ${
+        active
+          ? 'bg-primary text-primary-foreground border-primary'
+          : 'bg-card text-muted-foreground border-border hover:border-primary'
+      }`}
+    >
+      {label}
+    </TapButton>
   )
 }

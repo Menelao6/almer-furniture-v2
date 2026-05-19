@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { SectionHeader } from '@/components/section-header'
 import { ImageLightbox } from '@/components/image-lightbox'
+import { useReliableTap } from '@/lib/use-reliable-tap'
 
 interface GalleryItem {
   _id: string
@@ -75,19 +76,22 @@ function GalleryTile({
   className?: string
   onOpen: () => void
 }) {
+  const openTap = useReliableTap(onOpen)
+
   return (
     <button
       type="button"
-      onClick={onOpen}
-      className={`group relative rounded-[var(--radius-lg)] overflow-hidden bg-muted text-left w-full h-full min-h-[clamp(8rem,18vw,11rem)] touch-manipulation cursor-zoom-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${className}`}
+      className={`group relative rounded-[var(--radius-lg)] overflow-hidden bg-muted text-left w-full h-full min-h-[clamp(8rem,18vw,11rem)] touch-manipulation cursor-zoom-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 [-webkit-tap-highlight-color:transparent] ${className}`}
       aria-label={`Zmadho: ${item.title}`}
+      {...openTap}
     >
       <Image
         src={item.image}
         alt={item.title}
         fill
-        className="object-cover transition-transform duration-500 group-active:scale-[1.02]"
+        className="object-cover pointer-events-none select-none transition-transform duration-500 group-active:scale-[1.02]"
         sizes="(max-width: 1024px) 50vw, 25vw"
+        draggable={false}
       />
       <div className="absolute inset-0 bg-wood-dark/30 sm:bg-wood-dark/0 sm:group-hover:bg-wood-dark/70 transition-colors duration-300 flex flex-col justify-end p-[var(--space-card)] pointer-events-none">
         <h3 className="font-serif text-h3 text-white drop-shadow-sm">{item.title}</h3>
