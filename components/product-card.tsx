@@ -53,7 +53,7 @@ export function ProductCard({
               src={imageUrl}
               alt={name}
               fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              className="object-cover pointer-events-none select-none transition-transform duration-500 group-hover:scale-105"
               sizes="(max-width: 640px) 100vw, 25vw"
             />
           ) : null}

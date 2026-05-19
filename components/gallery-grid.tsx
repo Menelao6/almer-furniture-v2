@@ -4,6 +4,8 @@ import { useMemo, useState } from 'react'
 import Image from 'next/image'
 import type { SanityGalleryItem } from '@/lib/sanity.types'
 import { ImageLightbox } from '@/components/image-lightbox'
+import { TapButton } from '@/components/tap-button'
+import { useReliableTap } from '@/lib/use-reliable-tap'
 
 const ROOM_LABELS: Record<string, string> = {
   living: 'Dhoma ndenjeje',
@@ -41,14 +43,14 @@ export function GalleryGrid({ items }: GalleryGridProps) {
             <div className="flex flex-wrap gap-2">
               <FilterButton
                 active={selectedRoom === 'all'}
-                onClick={() => setSelectedRoom('all')}
+                onSelect={() => setSelectedRoom('all')}
                 label="Të gjitha"
               />
               {roomTypes.map((room) => (
                 <FilterButton
                   key={room}
                   active={selectedRoom === room}
-                  onClick={() => setSelectedRoom(room)}
+                  onSelect={() => setSelectedRoom(room)}
                   label={ROOM_LABELS[room] ?? room}
                 />
               ))}
@@ -62,32 +64,11 @@ export function GalleryGrid({ items }: GalleryGridProps) {
           {filtered.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filtered.map((item) => (
-                <button
+                <GalleryImageButton
                   key={item._id}
-                  type="button"
-                  onClick={() => item.image && setLightbox(item)}
-                  disabled={!item.image}
-                  className="group relative overflow-hidden rounded-xl aspect-square bg-[#EDE8DF] cursor-zoom-in text-left touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8864E] focus-visible:ring-offset-2 disabled:cursor-default"
-                  aria-label={`Zmadho: ${item.title}`}
-                >
-                  {item.image ? (
-                    <Image
-                      src={item.image}
-                      alt={item.title}
-                      fill
-                      className="object-cover transition-transform duration-500 group-active:scale-[1.02]"
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                    />
-                  ) : null}
-                  <div className="absolute inset-0 bg-[#1C1612]/35 sm:bg-[#1C1612]/0 sm:group-hover:bg-[#1C1612]/60 transition-colors flex items-end pointer-events-none">
-                    <div className="w-full p-6 sm:translate-y-2 sm:group-hover:translate-y-0 transition-transform">
-                      <h3 className="font-serif text-xl text-white mb-1 drop-shadow-sm">{item.title}</h3>
-                      {item.location ? (
-                        <p className="text-white/80 text-sm">{item.location}</p>
-                      ) : null}
-                    </div>
-                  </div>
-                </button>
+                  item={item}
+                  onOpen={() => setLightbox(item)}
+                />
               ))}
             </div>
           ) : (
@@ -112,26 +93,66 @@ export function GalleryGrid({ items }: GalleryGridProps) {
   )
 }
 
-function FilterButton({
-  active,
-  onClick,
-  label,
+function GalleryImageButton({
+  item,
+  onOpen,
 }: {
-  active: boolean
-  onClick: () => void
-  label: string
+  item: SanityGalleryItem
+  onOpen: () => void
 }) {
+  const openTap = useReliableTap(() => {
+    if (item.image) onOpen()
+  })
+
   return (
     <button
       type="button"
-      onClick={onClick}
-      className={`min-h-11 px-4 py-2.5 rounded-full text-sm font-medium transition-all touch-manipulation select-none active:scale-[0.98] ${
+      disabled={!item.image}
+      className="group relative overflow-hidden rounded-xl aspect-square bg-[#EDE8DF] cursor-zoom-in text-left touch-manipulation [-webkit-tap-highlight-color:transparent] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8864E] focus-visible:ring-offset-2 disabled:cursor-default"
+      aria-label={`Zmadho: ${item.title}`}
+      {...openTap}
+    >
+      {item.image ? (
+        <Image
+          src={item.image}
+          alt={item.title}
+          fill
+          className="object-cover pointer-events-none select-none transition-transform duration-500 group-active:scale-[1.02]"
+          sizes="(max-width: 768px) 100vw, 33vw"
+          draggable={false}
+        />
+      ) : null}
+      <div className="absolute inset-0 bg-[#1C1612]/35 sm:bg-[#1C1612]/0 sm:group-hover:bg-[#1C1612]/60 transition-colors flex items-end pointer-events-none">
+        <div className="w-full p-6 sm:translate-y-2 sm:group-hover:translate-y-0 transition-transform">
+          <h3 className="font-serif text-xl text-white mb-1 drop-shadow-sm">{item.title}</h3>
+          {item.location ? (
+            <p className="text-white/80 text-sm">{item.location}</p>
+          ) : null}
+        </div>
+      </div>
+    </button>
+  )
+}
+
+function FilterButton({
+  active,
+  onSelect,
+  label,
+}: {
+  active: boolean
+  onSelect: () => void
+  label: string
+}) {
+  return (
+    <TapButton
+      onTap={onSelect}
+      className={`min-h-11 px-4 py-2.5 rounded-full text-sm font-medium transition-all ${
         active
           ? 'bg-[#B8864E] text-white'
           : 'bg-white text-[#6B5B4E] border border-[#EDE8DF] hover:border-[#B8864E]'
       }`}
     >
       {label}
-    </button>
+    </TapButton>
   )
 }

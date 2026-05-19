@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { ProductCard } from './product-card'
 import { SectionHeader } from '@/components/section-header'
+import { TapButton } from '@/components/tap-button'
 import type { SanityProduct, ProductCategory } from '@/lib/sanity.types'
 
 interface FeaturedProductsProps {
@@ -33,14 +34,14 @@ export function FeaturedProducts({ products, categories }: FeaturedProductsProps
           <div className="flex flex-wrap gap-2 pb-2 mb-[var(--space-block)] sm:flex-nowrap sm:overflow-x-auto sm:scrollbar-hide sm:scroll-touch-x sm:-mx-[var(--container-px)] sm:px-[var(--container-px)] lg:mx-0 lg:px-0">
             <CategoryPill
               active={activeCategory === null}
-              onClick={() => setActiveCategory(null)}
+              onSelect={() => setActiveCategory(null)}
               label="Të gjitha"
             />
             {categories.map((cat) => (
               <CategoryPill
                 key={cat._id}
                 active={activeCategory === cat.slug}
-                onClick={() => setActiveCategory(cat.slug)}
+                onSelect={() => setActiveCategory(cat.slug)}
                 label={cat.title}
               />
             ))}
@@ -76,24 +77,23 @@ export function FeaturedProducts({ products, categories }: FeaturedProductsProps
 
 function CategoryPill({
   active,
-  onClick,
+  onSelect,
   label,
 }: {
   active: boolean
-  onClick: () => void
+  onSelect: () => void
   label: string
 }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`shrink-0 min-h-11 px-4 py-2.5 text-small rounded-full border transition-colors touch-manipulation select-none active:scale-[0.98] ${
+    <TapButton
+      onTap={onSelect}
+      className={`shrink-0 min-h-11 px-4 py-2.5 text-small rounded-full border transition-colors ${
         active
           ? 'bg-primary text-primary-foreground border-primary'
-          : 'bg-card text-muted-foreground border-border hover:bg-primary hover:text-primary-foreground hover:border-primary'
+          : 'bg-card text-muted-foreground border-border hover:border-primary'
       }`}
     >
       {label}
-    </button>
+    </TapButton>
   )
 }
