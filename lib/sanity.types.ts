@@ -53,6 +53,11 @@ export type SanityNews = {
   image?: SanityImage
 }
 
+export type SanityGalleryPhoto = {
+  url: string
+  alt?: string
+}
+
 export type SanityGalleryItem = {
   _id: string
   title: string
@@ -60,7 +65,9 @@ export type SanityGalleryItem = {
   location?: string
   description?: string
   roomType?: string
-  image: string
+  coverImage: string
+  images: SanityGalleryPhoto[]
+  featured?: boolean
   tall?: boolean
 }
 

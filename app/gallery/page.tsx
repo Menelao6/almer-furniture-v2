@@ -1,7 +1,8 @@
 import { Metadata } from 'next'
+import Link from 'next/link'
 import { Navigation } from '@/components/nav'
 import { Footer } from '@/components/footer'
-import { GalleryGrid } from '@/components/gallery-grid'
+import { GalleryExperience } from '@/components/gallery-experience'
 import { sanityFetchList } from '@/lib/sanity.client'
 import { allGalleryQuery } from '@/lib/sanity.queries'
 import type { SanityGalleryItem } from '@/lib/sanity.types'
@@ -18,15 +19,26 @@ export default async function GalleryPage() {
     <>
       <Navigation />
       <main>
-        <section className="bg-[#FAF7F2] py-16 border-b border-[#EDE8DF]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="font-serif text-4xl md:text-5xl text-[#1C1612] mb-4">Projektet tona</h1>
-            <p className="text-lg text-[#6B5B4E] max-w-2xl">
-              Hapësira reale të transformuara me mobilje me porosi — nga koncepti deri te montimi.
+        <section className="section-padding-sm bg-warm-white border-b border-border">
+          <div className="container-page">
+            <p className="text-eyebrow text-primary font-semibold mb-3">Portofoli</p>
+            <h1 className="font-serif text-h2 text-foreground leading-tight max-w-2xl mb-4">
+              Hapësira që kemi transformuar
+            </h1>
+            <p className="text-body text-muted-foreground max-w-xl mb-6">
+              Çdo projekt është një histori — nga vizualizimi 3D deri te montimi final. Prekni një
+              projekt për të parë të gjitha fotot.
             </p>
+            <Link
+              href="/contact"
+              className="inline-flex items-center text-small font-medium text-primary hover:underline touch-manipulation"
+            >
+              Dëshironi diçka të ngjashme? Konsultë falas →
+            </Link>
           </div>
         </section>
-        <GalleryGrid items={items} />
+
+        <GalleryExperience items={items} />
       </main>
       <Footer />
     </>

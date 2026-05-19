@@ -5,7 +5,7 @@ export default {
   fields: [
     {
       name: 'title',
-      title: 'Title',
+      title: 'Project title',
       type: 'string',
       validation: (Rule: any) => Rule.required(),
     },
@@ -18,23 +18,52 @@ export default {
       },
     },
     {
+      name: 'images',
+      title: 'Project photos',
+      type: 'array',
+      description:
+        'Upload all photos for this project at once. The first photo is used as the cover.',
+      of: [
+        {
+          type: 'image',
+          options: { hotspot: true },
+          fields: [
+            {
+              name: 'alt',
+              title: 'Alt text',
+              type: 'string',
+            },
+          ],
+        },
+      ],
+      validation: (Rule: any) =>
+        Rule.custom((images: unknown[] | undefined, context: { document?: { image?: unknown } }) => {
+          const doc = context.document
+          if ((!images || images.length === 0) && !doc?.image) {
+            return 'Add at least one project photo (or a legacy cover image below).'
+          }
+          return true
+        }),
+    },
+    {
       name: 'image',
-      title: 'Image',
+      title: 'Cover image (legacy)',
       type: 'image',
+      description:
+        'Optional fallback if you only have one image. Prefer using “Project photos” above.',
       options: {
         hotspot: true,
       },
-      validation: (Rule: any) => Rule.required(),
     },
     {
       name: 'roomType',
-      title: 'Room Type',
+      title: 'Room type',
       type: 'string',
       options: {
         list: [
-          { title: 'Living Room', value: 'living' },
+          { title: 'Living room', value: 'living' },
           { title: 'Bedroom', value: 'bedroom' },
-          { title: 'Dining Room', value: 'dining' },
+          { title: 'Dining room', value: 'dining' },
           { title: 'Office', value: 'office' },
           { title: 'Kitchen', value: 'kitchen' },
           { title: 'Bathroom', value: 'bathroom' },
@@ -54,19 +83,42 @@ export default {
     },
     {
       name: 'featured',
-      title: 'Featured on gallery page',
+      title: 'Highlight on gallery page',
       type: 'boolean',
+      description: 'Large featured tile at the top of the gallery grid.',
     },
     {
       name: 'featuredOnHome',
-      title: 'Featured on home (tall tile)',
+      title: 'Featured on home page',
       type: 'boolean',
+      description:
+        'Shows this project in the home page gallery (up to 4). The first project in the list appears as the large tile.',
     },
   ],
   preview: {
     select: {
       title: 'title',
-      media: 'image',
+      media: 'images.0',
+      fallback: 'image',
+      photoCount: 'images',
+    },
+    prepare({
+      title,
+      media,
+      fallback,
+      photoCount,
+    }: {
+      title: string
+      media?: unknown
+      fallback?: unknown
+      photoCount?: unknown[]
+    }) {
+      const count = Array.isArray(photoCount) ? photoCount.length : 0
+      return {
+        title,
+        subtitle: count > 0 ? `${count} foto` : 'Pa foto',
+        media: media ?? fallback,
+      }
     },
   },
 }
