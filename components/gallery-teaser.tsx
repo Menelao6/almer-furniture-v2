@@ -1,26 +1,19 @@
 'use client'
 
-import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Images } from 'lucide-react'
 import { SectionHeader } from '@/components/section-header'
-import { ImageLightbox } from '@/components/image-lightbox'
-import { useReliableTap } from '@/lib/use-reliable-tap'
-
-interface GalleryItem {
-  _id: string
-  title: string
-  location: string
-  image: string
-  tall?: boolean
-}
+import type { SanityGalleryItem } from '@/lib/sanity.types'
+import { getCoverImage, getGalleryProjectPath, getGallerySlides } from '@/lib/gallery-utils'
 
 interface GalleryTeaserProps {
-  items: GalleryItem[]
+  items: SanityGalleryItem[]
 }
 
 export function GalleryTeaser({ items }: GalleryTeaserProps) {
-  const [lightbox, setLightbox] = useState<GalleryItem | null>(null)
+  if (items.length === 0) return null
+
   const [tall, ...rest] = items
 
   return (
@@ -33,36 +26,24 @@ export function GalleryTeaser({ items }: GalleryTeaserProps) {
         />
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-[var(--space-gap)] auto-rows-[minmax(clamp(8rem,18vw,11rem),1fr)]">
-          {tall && (
-            <GalleryTile
-              item={tall}
-              className="col-span-1 row-span-2 min-h-[clamp(16rem,42vw,24rem)]"
-              onOpen={() => setLightbox(tall)}
-            />
-          )}
+          <GalleryTile
+            item={tall}
+            className="col-span-1 row-span-2 min-h-[clamp(16rem,42vw,24rem)]"
+          />
           {rest.map((item) => (
-            <GalleryTile key={item._id} item={item} onOpen={() => setLightbox(item)} />
+            <GalleryTile key={item._id} item={item} />
           ))}
         </div>
 
         <p className="text-center mt-[var(--space-block)]">
           <Link
             href="/gallery"
-            className="text-small text-muted-foreground hover:text-primary transition-colors"
+            className="text-small text-muted-foreground hover:text-primary transition-colors touch-manipulation"
           >
             Shiko të gjitha projektet →
           </Link>
         </p>
       </div>
-
-      <ImageLightbox
-        open={Boolean(lightbox)}
-        onClose={() => setLightbox(null)}
-        src={lightbox?.image ?? ''}
-        alt={lightbox?.title ?? ''}
-        title={lightbox?.title}
-        description={lightbox?.location}
-      />
     </section>
   )
 }
@@ -70,40 +51,45 @@ export function GalleryTeaser({ items }: GalleryTeaserProps) {
 function GalleryTile({
   item,
   className = '',
-  onOpen,
 }: {
-  item: GalleryItem
+  item: SanityGalleryItem
   className?: string
-  onOpen: () => void
 }) {
-  const openTap = useReliableTap(onOpen)
+  const cover = getCoverImage(item)
+  const photoCount = getGallerySlides(item).length
+  const href = getGalleryProjectPath(item)
 
   return (
-    <button
-      type="button"
-      className={`group relative rounded-[var(--radius-lg)] overflow-hidden bg-muted text-left w-full h-full min-h-[clamp(8rem,18vw,11rem)] touch-manipulation cursor-zoom-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 [-webkit-tap-highlight-color:transparent] ${className}`}
-      aria-label={`Zmadho: ${item.title}`}
-      {...openTap}
+    <Link
+      href={href}
+      className={`group relative rounded-[var(--radius-lg)] overflow-hidden bg-muted block w-full h-full min-h-[clamp(8rem,18vw,11rem)] touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 [-webkit-tap-highlight-color:transparent] ${className} ${!cover ? 'pointer-events-none opacity-60' : ''}`}
+      aria-label={`Shiko ${photoCount} foto: ${item.title}`}
     >
-      <Image
-        src={item.image}
-        alt={item.title}
-        fill
-        className="object-cover pointer-events-none select-none transition-transform duration-500 group-active:scale-[1.02]"
-        sizes="(max-width: 1024px) 50vw, 25vw"
-        draggable={false}
-      />
+      {cover ? (
+        <Image
+          src={cover}
+          alt={item.title}
+          fill
+          className="object-cover pointer-events-none select-none transition-transform duration-500 group-active:scale-[1.02]"
+          sizes="(max-width: 1024px) 50vw, 25vw"
+          draggable={false}
+        />
+      ) : null}
+      {photoCount > 1 ? (
+        <span className="absolute top-2 right-2 z-10 inline-flex items-center gap-1 rounded-full bg-wood-dark/75 px-2 py-0.5 text-[10px] font-medium text-white pointer-events-none">
+          <Images size={10} aria-hidden />
+          {photoCount}
+        </span>
+      ) : null}
       <div className="absolute inset-0 bg-wood-dark/30 sm:bg-wood-dark/0 sm:group-hover:bg-wood-dark/70 transition-colors duration-300 flex flex-col justify-end p-[var(--space-card)] pointer-events-none">
         <h3 className="font-serif text-h3 text-white drop-shadow-sm">{item.title}</h3>
         {item.location ? (
           <p className="text-small text-white/80 mb-1">{item.location}</p>
         ) : null}
         <span className="text-small text-primary font-medium sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
-          Zmadho →
+          Shiko projektin →
         </span>
       </div>
-    </button>
+    </Link>
   )
 }
-
-

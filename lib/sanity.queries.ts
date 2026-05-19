@@ -64,25 +64,39 @@ export const latestNewsQuery = `*[_type == "news"] | order(publishedAt desc) [0.
   }
 }`
 
-export const homeGalleryQuery = `*[_type == "gallery" && featured == true] | order(featuredOnHome desc, _createdAt desc) [0...4] {
-  _id,
-  title,
-  location,
-  description,
-  roomType,
-  "image": image.asset->url,
-  "tall": featuredOnHome
-}`
-
-export const allGalleryQuery = `*[_type == "gallery"] | order(_createdAt desc) {
+const galleryFields = `
   _id,
   title,
   slug,
   location,
   description,
   roomType,
-  "image": image.asset->url,
-  featured
+  featured,
+  featuredOnHome,
+  "coverImage": coalesce(images[0].asset->url, image.asset->url),
+  "images": coalesce(
+    images[]{
+      "url": asset->url,
+      "alt": coalesce(alt, ^.title)
+    }[defined(url)],
+    select(defined(image.asset->url) => [{
+      "url": image.asset->url,
+      "alt": title
+    }])
+  )
+`
+
+export const homeGalleryQuery = `*[_type == "gallery" && featuredOnHome == true] | order(_createdAt desc) [0...4] {
+  ${galleryFields},
+  "tall": featuredOnHome
+}`
+
+export const allGalleryQuery = `*[_type == "gallery"] | order(featured desc, _createdAt desc) {
+  ${galleryFields}
+}`
+
+export const galleryBySlugQuery = `*[_type == "gallery" && (slug.current == $slug || _id == $slug)][0] {
+  ${galleryFields}
 }`
 
 export const featuredServicesQuery = `*[_type == "service"] | order(featured desc, title asc) {
